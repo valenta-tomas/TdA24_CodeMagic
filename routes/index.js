@@ -5,8 +5,10 @@ const api= {
 }
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log(api.secret)
   res.render('index', { title: 'Express' });
 });
+router.get('/api',(req, res)=>{
+  console.log(api)
+})
 
 module.exports = router;
