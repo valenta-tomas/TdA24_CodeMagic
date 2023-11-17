@@ -1,16 +1,11 @@
 var express = require('express');
 var router = express.Router();
-
+const api= {
+  "secret":"The cake is a lie"
+}
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  fetch("http://server-url.cz/api")
-  .then((res) => res.json())
-  .then(data=> console.log(data))
-
-  .catch(function (err) {
-    console.log("Unable to fetch -", err);
-  });
-
+  console.log(api.secret)
   res.render('index', { title: 'Express' });
 });
 
