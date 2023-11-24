@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1(class="text-4xl text-[blue]")= title_before 
+  h1= first_name
+  h1= middle_name
+  h1= last_name
+  h1= title_after
+  img(src=picture_url, 
+    alt= title_before+" "+first_name+ " "+middle_name+" "+last_name  
+    class="rounded-full")
+  h1= location
+  p= claim
+  != bio

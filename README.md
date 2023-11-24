@@ -49,3 +49,9 @@ Pro více informací si pročtěte [oficiální Express tutoriál](https://expre
 ## Odevzdání
 
 TODO: sepsat podle finální verze odevzdávacího systému
+
+
+
+
+## Tailwinds
+ npx tailwindcss -i ./public/stylesheets/input.css -o ./public/dist/output.css --watch
