@@ -13,11 +13,8 @@ router.get('/api',(req, res)=>{
 })
 
 router.get('/lecturer',(req, res)=>{
-  res.render('lecturer', { title_before: data.title_before
-    ,first_name:data.first_name
-    ,middle_name:data.middle_name
-    ,last_name:data.last_name
-    ,title_after:data.title_after
+  res.render('lecturer', { title_before: data.title_before,
+    full_name: data.title_before+" "+data.first_name +" " + data.middle_name+" "+data.last_name+" "+data.title_after
     ,picture_url:data.picture_url
     ,location:data.location
     ,claim:data.claim
