@@ -19,6 +19,8 @@ router.get('/lecturer',(req, res)=>{
     ,location:data.location
     ,claim:data.claim
     ,bio:data.bio
+    ,telephone_numbers:data.contact.telephone_numbers
+    ,emails:data.contact.emails
    });
 })
 module.exports = router;
