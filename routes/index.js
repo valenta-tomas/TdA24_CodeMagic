@@ -4,20 +4,6 @@ var router = express.Router();
 
 const data= require('../public/data/lecturer.json');
 
-// split function
-
-const claimItem = function (data){
-  let myArray = data.split("/")
-  for(let i =0; i<myArray.length; i++)
-  {
-    myArray[i] = myArray[i].trim()
-  }
-  return myArray
-}
-const claimArray = claimItem(data.claim)
-
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -35,7 +21,7 @@ router.get('/lecturer',(req, res)=>{
     ,picture_url:data.picture_url
     ,location:data.location
     ,price_per_hour:data.price_per_hour
-    ,claim:claimArray
+    ,claim:data.claim
     ,bio:data.bio
     ,telephone_numbers:data.contact.telephone_numbers
     ,emails:data.contact.emails
@@ -48,6 +34,5 @@ router.get('/lecturer',(req, res)=>{
     ,tag7 : data.tags[6].name
     ,tag8 : data.tags[7].name
    });
-   console.log(claimArray)
 })
 module.exports = router;
