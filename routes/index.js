@@ -1,8 +1,26 @@
 var express = require('express');
 var router = express.Router();
 
-
 const data= require('../public/data/lecturer.json');
+router.post("/lecturers", (req,res)=>{
+  try {
+    const data = req.body.price_per_hour
+    console.log(data)
+    return res.json({
+      status:200,
+      success:true,
+    });
+    
+  } catch (error) {
+    return res.json({
+      status:400,
+      success:false,
+    });
+  }
+})
+router.get("/lecturers", (req,res)=>{
+ const data = "";
+})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
