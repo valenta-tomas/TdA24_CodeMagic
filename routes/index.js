@@ -1,11 +1,34 @@
 var express = require('express');
 var router = express.Router();
-
+const { v4: uuidv4 } = require('uuid');
+const sqlite3 = require("sqlite3");
 const data= require('../public/data/lecturer.json');
+
 router.post("/lecturers", (req,res)=>{
   try {
-    const data = req.body.price_per_hour
-    console.log(data)
+
+    const lecturer_uuid= uuidv4()
+
+    const title_before = req.body.title_before
+    const first_name = req.body.first_name
+    const middle_name = req.body.middle_name
+    const last_name = req.body.last_name
+    const title_after = req.body.title_after
+    const picture_url = req.body.picture_url
+    const location = req.body.location
+    const claim = req.body.claim
+    const bio = req.body.bio
+    const price_per_hour = req.body.price_per_hour
+    const telephone_numbers = req.body.contact.telephone_numbers
+    const emails = req.body.contact.emails
+    
+ //db.run('CREATE TABLE lecturers ( lecturer_uuid UUID NOT NULL, title_before VARCHAR(255), first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255) NOT NULL, title_after VARCHAR(255), picture_url VARCHAR(255), location VARCHAR(255), claim VARCHAR(255), bio TEXT, price_per_hour NUMERIC(10,2), PRIMARY KEY (lecturer_uuid));');
+    if (result.code !== SQLITE_OK) {
+      console.log("tabulka neni")
+    }
+
+    console.log(lecturer_uuid)
+    console.log(title_before +"\n"+first_name+"\n"+middle_name+"\n"+last_name+"\n"+title_after+"\n"+picture_url+"\n"+location+"\n"+claim+"\n"+bio+"\n"+telephone_numbers+"\n"+emails+"\n"+price_per_hour)
     return res.json({
       status:200,
       success:true,

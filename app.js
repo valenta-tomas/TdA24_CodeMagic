@@ -52,4 +52,5 @@ app.use(function(err, req, res, next) {
 db.run('CREATE TABLE IF NOT EXISTS tourdeapp (record TEXT)');
 db.close();
 
+global.db = db;
 module.exports = app;
