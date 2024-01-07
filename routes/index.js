@@ -31,24 +31,89 @@ class Lecturer {
     this.tags = tags;
   }
   safe_data(){
-    const insertSqlContact = `INSERT INTO contact (phoneNumber, email, contact_uuid) VALUES (?, ?, ?)`;
+    const insertSqlContact = `INSERT INTO contact (phone_number, email, contact_uuid) VALUES (?, ?, ?)`;
     const insertValuesContact = [this.telephone_numbers, this.emails, this.uuid];
     console.log(insertValuesContact)
+
+    db.run(insertSqlContact, insertValuesContact, (err) => {
+      if (err) {
+        // res.status(500).send('An error occurred while saving the tag: ' + err);
+        return;
+      }
+  
+      // res.status(200).send();
+    });
 
     const insertSqlLecturers = `INSERT INTO lecturers (lecturer_uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact_uuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const insertValuesLecturers = [ this.uuid, this.title_before, this.first_name, this.middle_name, this.last_name, this.title_after, this.picture_url, this.location, this.claim, this.bio, this.price_per_hour, this.uuid];
     console.log(insertValuesLecturers)
+
+    db.run(insertSqlLecturers, insertValuesLecturers, (err) => {
+      if (err) {
+        // res.status(500).send('An error occurred while saving the tag: ' + err);
+        return;
+      }
+  
+      // res.status(200).send();
+    });
+
+
+
     
-    const checkSql = `SELECT COUNT(*) AS count FROM tags WHERE tag = ?`;
-    const getSql = `
-    SELECT tag_uuid
-    FROM tags
-    WHERE tag = ?
-  `;
+    const getSql = `SELECT tag_uuid FROM tags WHERE tag = ?`;
+    const insertSql = `INSERT INTO lecturer_tags (lecturer_uuid, tag_uuid) VALUES (?, ?)`;
     for(let i =0; i<this.tags.length; i++){
+
       let checkValues=[this.tags[i].name];
       console.log(checkValues)
-      console.log(this.tags)
+      db.all(getSql, checkValues,(err, rows)=>{
+        if(err){
+          // res.status(500).send('An error occurred while getting the tag UUID: ' + err);
+          return;
+        }
+
+
+        if(rows.length === 0){
+          // nexistuje
+          const insertSqlTag = `INSERT INTO tags (tag_uuid, tag) VALUES (?, ?)`;
+          const tag_uuid2 = uuidv4()
+          const insertValues = [ tag_uuid2, checkValues];
+
+          db.run(insertSqlTag, insertValues, (err) => {
+            if (err) {
+              // res.status(500).send('An error occurred while saving the tag: ' + err);
+              return;
+            }
+            // res.status(200).send();
+          });
+
+
+          const insertValues2 = [ this.uuid, tag_uuid2];
+          db.run(insertSql, insertValues2, (err) => {
+            if (err) {
+              // res.status(500).send('An error occurred while saving the lecturer-tag association: ' + err);
+              return;
+            }
+            // res.status(200).send();
+          });
+          
+          return;
+        }
+
+
+        //existuje
+        const tagUuid = rows[0].tag_uuid;
+
+        const insertValues = [this.uuid, tagUuid];
+        db.run(insertSql, insertValues, (err) => {
+          if (err) {
+            // res.status(500).send('An error occurred while saving the lecturer-tag association: ' + err);
+            return;
+          }
+      
+          // res.status(200).send();
+        });
+      })
     }
 
   }
@@ -79,7 +144,16 @@ router.post("/lecturers", (req,res)=>{
   }
 })
 router.get("/lecturers", (req,res)=>{
- const data = "";
+  const getSql = `SELECT * FROM lecturer_tags INNER JOIN lecturers ON lecturer_tags.lecturer_uuid = lecturers.lecturer_uuid;`;
+
+  db.all(getSql, (err, rows) => {
+    if (err) {
+      res.status(500).send('An error occurred while getting all lecturer-tags: ' + err);
+      return;
+    }
+
+    res.status(200).send(rows);
+  });
 })
 
 /* GET home page. */
