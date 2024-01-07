@@ -122,7 +122,7 @@ class Lecturer {
       console.log(this.tags)
   }
 }
-router.post("/lecturers", (req,res)=>{
+router.post("/api/lecturers", (req,res)=>{
   try {
 
     const uuid= uuidv4()
@@ -143,8 +143,8 @@ router.post("/lecturers", (req,res)=>{
     });
   }
 })
-router.get("/lecturers", (req,res)=>{
-  const getSql = `SELECT * FROM lecturer_tags INNER JOIN lecturers ON lecturer_tags.lecturer_uuid = lecturers.lecturer_uuid;`;
+router.get("/api/lecturers", (req,res)=>{
+  const getSql = `SELECT * FROM lecturers`;
 
   db.all(getSql, (err, rows) => {
     if (err) {
