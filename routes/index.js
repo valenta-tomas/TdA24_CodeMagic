@@ -1,34 +1,71 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const sqlite3 = require("sqlite3");
+const sqlite3 = require('sqlite3').verbose();
 const data= require('../public/data/lecturer.json');
 
+const db = new sqlite3.Database("data/db.sqlite");
+// db.run("CREATE TABLE lecturers_tags ( lecturer_uuid UUID NOT NULL, tag TEXT NOT NULL, PRIMARY KEY (lecturer_uuid, tag));")
+// db.run("DROP TABLE lecturers_tags;")
+console.log(db)
+
+class Lecturer {
+  constructor(uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, telephone_numbers, emails, tags) {
+    this.uuid = uuid;
+
+    this.title_before = title_before;
+    this.first_name = first_name;
+    this.middle_name = middle_name;
+    this.last_name = last_name;
+    this.title_after = title_after;
+    this.picture_url = picture_url;
+    this.location = location;
+    this.claim = claim;
+    this.bio = bio;
+    this.price_per_hour = price_per_hour;
+
+    this.telephone_numbers = telephone_numbers;
+    this.emails = emails;
+
+    this.tags = tags;
+  }
+  safe_data(){
+    const insertSqlContact = `INSERT INTO contact (phoneNumber, email, contact_uuid) VALUES (?, ?, ?)`;
+    const insertValuesContact = [this.telephone_numbers, this.emails, this.uuid];
+    console.log(insertValuesContact)
+
+    const insertSqlLecturers = `INSERT INTO lecturers (lecturer_uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact_uuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const insertValuesLecturers = [ this.uuid, this.title_before, this.first_name, this.middle_name, this.last_name, this.title_after, this.picture_url, this.location, this.claim, this.bio, this.price_per_hour, this.uuid];
+    console.log(insertValuesLecturers)
+    
+    const checkSql = `SELECT COUNT(*) AS count FROM tags WHERE tag = ?`;
+    const getSql = `
+    SELECT tag_uuid
+    FROM tags
+    WHERE tag = ?
+  `;
+    for(let i =0; i<this.tags.length; i++){
+      let checkValues=[this.tags[i].name];
+      console.log(checkValues)
+      console.log(this.tags)
+    }
+
+  }
+
+  write_tags(){
+      console.log(this.tags)
+  }
+}
 router.post("/lecturers", (req,res)=>{
   try {
 
-    const lecturer_uuid= uuidv4()
+    const uuid= uuidv4()
+    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, req.body.tags)
+//  db.run('CREATE TABLE lecturers ( lecturer_uuid UUID NOT NULL, title_before VARCHAR(255), first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255) NOT NULL, title_after VARCHAR(255), picture_url VARCHAR(255), location VARCHAR(255), claim VARCHAR(255), bio TEXT, price_per_hour NUMERIC(10,2), PRIMARY KEY (lecturer_uuid));');ˇ
 
-    const title_before = req.body.title_before
-    const first_name = req.body.first_name
-    const middle_name = req.body.middle_name
-    const last_name = req.body.last_name
-    const title_after = req.body.title_after
-    const picture_url = req.body.picture_url
-    const location = req.body.location
-    const claim = req.body.claim
-    const bio = req.body.bio
-    const price_per_hour = req.body.price_per_hour
-    const telephone_numbers = req.body.contact.telephone_numbers
-    const emails = req.body.contact.emails
-    
- //db.run('CREATE TABLE lecturers ( lecturer_uuid UUID NOT NULL, title_before VARCHAR(255), first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255) NOT NULL, title_after VARCHAR(255), picture_url VARCHAR(255), location VARCHAR(255), claim VARCHAR(255), bio TEXT, price_per_hour NUMERIC(10,2), PRIMARY KEY (lecturer_uuid));');
-    if (result.code !== SQLITE_OK) {
-      console.log("tabulka neni")
-    }
-
-    console.log(lecturer_uuid)
-    console.log(title_before +"\n"+first_name+"\n"+middle_name+"\n"+last_name+"\n"+title_after+"\n"+picture_url+"\n"+location+"\n"+claim+"\n"+bio+"\n"+telephone_numbers+"\n"+emails+"\n"+price_per_hour)
+    NewLecturer.safe_data()
+    console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     return res.json({
       status:200,
       success:true,
