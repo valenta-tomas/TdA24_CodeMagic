@@ -133,9 +133,28 @@ class Lecturer {
     const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, req.body.tags)
     NewLecturer.safe_data()
     console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
-    return res.json({
-      status:200,
-      success:true,
+    
+    return res.status(200).json({
+      "uuid": NewLecturer.uuid,
+      "title_before": NewLecturer.title_before,
+      "first_name": NewLecturer.first_name,
+      "middle_name": NewLecturer.middle_name,
+      "last_name": NewLecturer.last_name,
+      "title_after": NewLecturer.title_after,
+      "picture_url": NewLecturer.picture_url,
+      "location": NewLecturer.location,
+      "claim": NewLecturer.claim,
+      "bio": NewLecturer.bio,
+      "tags": NewLecturer.tags,
+      "price_per_hour": NewLecturer.price_per_hour,
+      "contact": {
+        "telephone_numbers": [
+          NewLecturer.telephone_numbers
+        ],
+        "emails": [
+          NewLecturer.emails          
+        ]
+      }
     });
     
   } catch (error) {
