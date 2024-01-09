@@ -148,12 +148,11 @@ class Lecturer {
       "tags": NewLecturer.tags,
       "price_per_hour": NewLecturer.price_per_hour,
       "contact": {
-        "telephone_numbers": [
+        "telephone_numbers": 
           NewLecturer.telephone_numbers
-        ],
-        "emails": [
-          NewLecturer.emails          
-        ]
+        ,
+        "emails": 
+          NewLecturer.emails             
       }
     });
     
