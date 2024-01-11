@@ -130,6 +130,12 @@ class Lecturer {
   try {
 
     const uuid= uuidv4()
+    let tags = req.body.tags
+    for(let i=0; i<tags.length; i++){
+      tags[i]["uuid"] = uuidv4()
+    }
+    
+    console.log(tags)
     const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, req.body.tags)
     NewLecturer.safe_data()
     console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
@@ -145,7 +151,7 @@ class Lecturer {
       "location": NewLecturer.location,
       "claim": NewLecturer.claim,
       "bio": NewLecturer.bio,
-      "tags": NewLecturer.tags,
+      "tags": tags,
       "price_per_hour": NewLecturer.price_per_hour,
       "contact": {
         "telephone_numbers": 
