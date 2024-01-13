@@ -65,6 +65,7 @@ class Lecturer {
     for(let i =0; i<this.tags.length; i++){
 
       let checkValues=[this.tags[i].name];
+      let checkTags_uuid=[this.tags[i].uuid];
       console.log(checkValues)
       db.all(getSql, checkValues,(err, rows)=>{
         if(err){
@@ -76,8 +77,7 @@ class Lecturer {
         if(rows.length === 0){
           // nexistuje
           const insertSqlTag = `INSERT INTO tags (tag_uuid, tag) VALUES (?, ?)`;
-          const tag_uuid2 = uuidv4()
-          const insertValues = [ tag_uuid2, checkValues];
+          const insertValues = [ checkTags_uuid, checkValues];
 
           db.run(insertSqlTag, insertValues, (err) => {
             if (err) {
@@ -88,7 +88,7 @@ class Lecturer {
           });
 
 
-          const insertValues2 = [ this.uuid, tag_uuid2];
+          const insertValues2 = [ this.uuid, checkTags_uuid];
           db.run(insertSql, insertValues2, (err) => {
             if (err) {
               // res.status(500).send('An error occurred while saving the lecturer-tag association: ' + err);
@@ -122,6 +122,11 @@ class Lecturer {
       console.log(this.tags)
   }
 }
+
+
+
+
+
   db.run('CREATE TABLE IF NOT EXISTS lecturers (lecturer_uuid UUID NOT NULL, title_before VARCHAR(255), first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255) NOT NULL, title_after VARCHAR(255), picture_url VARCHAR(255), location VARCHAR(255), claim VARCHAR(255), bio TEXT, price_per_hour NUMERIC(10,2), PRIMARY KEY (lecturer_uuid));');
   db.run('CREATE TABLE IF NOT EXISTS contact ( phone_number TEXT NOT NULL, email TEXT NOT NULL, uuid UUID NOT NULL, PRIMARY KEY (uuid));')
   db.run('CREATE TABLE IF NOT EXISTS tags (tag_uuid UUID NOT NULL, tag CHAR(255) NOT NULL, PRIMARY KEY (tag_uuid));')
@@ -134,9 +139,9 @@ class Lecturer {
     for(let i=0; i<tags.length; i++){
       tags[i]["uuid"] = uuidv4()
     }
-    
+
     console.log(tags)
-    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, req.body.tags)
+    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
     NewLecturer.safe_data()
     console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     
@@ -151,7 +156,7 @@ class Lecturer {
       "location": NewLecturer.location,
       "claim": NewLecturer.claim,
       "bio": NewLecturer.bio,
-      "tags": tags,
+      "tags": NewLecturer.tags,
       "price_per_hour": NewLecturer.price_per_hour,
       "contact": {
         "telephone_numbers": 
@@ -169,46 +174,52 @@ class Lecturer {
     });
   }
 })
-router.get("/api/lecturers", (req,res)=>{
-  const getSql = `SELECT * FROM lecturers`;
-
-  db.all(getSql, (err, rows) => {
+router.get('/api/lecturers', (req, res) => {
+  const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.contact_uuid = contact.contact_uuid JOIN lecturer_tags ON lecturers.lecturer_uuid = lecturer_tags.lecturer_uuid JOIN tags ON lecturer_tags.tag_uuid = tags.tag_uuid`;
+  let LecturerFull=[];
+  db.all(getLecturers, (err, rows) => {
     if (err) {
       res.status(500).send('An error occurred while getting all lecturer-tags: ' + err);
       return;
     }
-
-    res.status(200).send([
-      {
-        "uuid": "67fda282-2bca-41ef-9caf-039cc5c8dd69",
-        "title_before": "Mgr.",
-        "first_name": "Petra",
-        "middle_name": "Swil",
-        "last_name": "Plachá",
-        "title_after": "MBA",
-        "picture_url": "https://picsum.photos/200",
-        "location": "Brno",
-        "claim": "Bez dobré prezentace je i nejlepší myšlenka k ničemu.",
-        "bio": "<b>Formátovaný text</b> s <i>bezpečnými</i> tagy.",
-        "tags": [
-          {
-            "uuid": "c20b98dd-f37e-4fa7-aac1-73300abf086e",
-            "name": "Marketing"
-          }
-        ],
-        "price_per_hour": 720,
-        "contact": {
-          "telephone_numbers": [
-            "+123 777 338 111"
-          ],
-          "emails": [
-            "user@example.com"
-          ]
-        }
+      let L_uuid =[]
+      for(let a =0; a<rows[0].length;a++){
+        L_uuid.push(rows[1].lecturer_uuid)
       }
-    ]);
+      console.log(L_uuid)
+    for(let i=0; i<rows.length;i++){
+
+      LecturerFull.push(
+        {
+          uuid:rows[i].lecturer_uuid,
+          title_before:rows[i].title_before,
+          first_name:rows[i].first_name,
+          middle_name:rows[i].middle_name,
+          last_name:rows[i].last_name,
+          title_after:rows[i].title_after,
+          picture_url:rows[i].picture_url,
+          location:rows[i].location,
+          claim:rows[i].claim,
+          bio:rows[i].bio,
+          tags:[{uuid:rows[i].tag_uuid,
+          name:rows[i].tag}],
+          price_per_hour:rows[i].price_per_hour,
+          contact:{
+            telephone_numbers:rows[i].phone_number,
+            emails:rows[i].email
+          }
+        }
+      )
+
+    }
+
+    res.status(200).send(LecturerFull[0])
   });
-})
+});
+
+
+
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
