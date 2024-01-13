@@ -175,7 +175,7 @@ class Lecturer {
   }
 })
 router.get('/api/lecturers', (req, res) => {
-  const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.contact_uuid = contact.contact_uuid JOIN lecturer_tags ON lecturers.lecturer_uuid = lecturer_tags.lecturer_uuid JOIN tags ON lecturer_tags.tag_uuid = tags.tag_uuid`;
+  const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid JOIN lecturer_tags ON lecturers.lecturer_uuid = lecturer_tags.lecturer_uuid JOIN tags ON lecturer_tags.tag_uuid = tags.tag_uuid`;
   let LecturerFull=[];
   db.all(getLecturers, (err, rows) => {
     if (err) {
