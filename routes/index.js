@@ -221,7 +221,7 @@ router.get('/api/lecturers', (req, res) => {
           location:unikatniData[i].location,
           claim:unikatniData[i].claim,
           bio:unikatniData[i].bio,
-          tags:[filtrovanaPole],
+          tags:filtrovanaPole,
           price_per_hour:unikatniData[i].price_per_hour,
           contact:{
             telephone_numbers:unikatniData[i].phone_number,
