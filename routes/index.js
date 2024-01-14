@@ -331,7 +331,50 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
     }
   })
 })
+router.put('/api/lecturers/:uuid', (req, res) => {
+  const LecturerDataUpdate = 'UPDATE lecturers SET first_name = ?, last_name = ?, middle_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, price_per_hour = ?,title_before=? WHERE lecturer_uuid = ?';
+  
+  const ContactDataUpdate= 'UPDATE contact SET phone_number = ?, email = ? WHERE contact_uuid = ?';
+  const TagsDataUpdate ='SELECT tags.*, lecturer_tags.* FROM tags, lecturer_tags WHERE tags.tag_uuid = lecturer_tags.tag_uuid;';
+  const uuidParam = req.params.uuid;
+  const updateData = req.body;
 
+  db.run(LecturerDataUpdate, [
+    updateData.first_name,
+    updateData.last_name,
+    updateData.middle_name,
+    updateData.title_after,
+    updateData.picture_url,
+    updateData.location,
+    updateData.claim,
+    updateData.bio,
+    updateData.price_per_hour,
+    updateData.title_before,
+    uuidParam
+  ], (err) => {
+    if (err) {
+      res.status(404).send('User not found');
+      console.error(err);
+      return;
+    }
+    db.all(ContactDataUpdate, [
+      updateData.contact.telephone_numbers,
+      updateData.contact.emails,
+      uuidParam
+    ], (err) => {
+      if (err) {
+        res.status(404).send('User not found');
+        console.error(err);
+        return;
+      }
+      db.all(TagsDataUpdate,(err,rows)=>{
+        console.log(rows)
+      })
+      res.status(200).send('Contact data updated successfully');
+    });
+    
+  });
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
