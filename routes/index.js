@@ -224,8 +224,8 @@ router.get('/api/lecturers', (req, res) => {
           tags:filtrovanaPole,
           price_per_hour:unikatniData[i].price_per_hour,
           contact:{
-            telephone_numbers:unikatniData[i].phone_number,
-            emails:unikatniData[i].email
+            telephone_numbers:[unikatniData[i].phone_number],
+            emails:[unikatniData[i].email]
           }
         }
       )
@@ -263,7 +263,7 @@ router.delete('/api/lecturers/:uuid', (req, res)=>{
             console.error(err);
             return;
           }
-          res.status(204)
+          res.status(200)
           console.log("Záznamy byly úspěšně odstraněny.");
 
         });
@@ -274,7 +274,63 @@ router.delete('/api/lecturers/:uuid', (req, res)=>{
   }})
 })
 
+router.get('/api/lecturers/:uuid', (req, res)=>{
+  const uuidParam = req.params;
+  let LecturerFull=[];
+  const getLecturer = "SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid =contact.contact_uuid WHERE lecturer_uuid = ?";
+  const getLecturer_tags = "SELECT * FROM lecturer_tags WHERE lecturer_tags.lecturer_uuid= ?";
+  const getTags =  "SELECT * FROM tags";
+  db.all(getLecturer,uuidParam.uuid, (err, rows) => {
+    if(err){
+      res.status(404).send('User not found');
+      return;
+    }
+    else{
+      db.all(getLecturer_tags,rows[0].lecturer_uuid,(err, rows2) =>{
+        db.all(getTags,(err,rows3)=>{
+          filterTags=[]
+          for(let i =0; i<rows2.length; i++){
+            filtrovanaPole = rows3.filter(function(value) {
+              if (value.tag_uuid === rows2[i].tag_uuid) {
+                return true;
+              } else {
+                return false;
+              }
+            }).map(function(value) {
+              filterTags.push({uuid: value.tag_uuid, name: value.tag });
+              // return { lecturer_uuid:value.lecturer_uuid, uuid: value.tag_uuid, name: value.tag };
+            });
+          }
 
+          console.log(filterTags)
+          LecturerFull.push(
+            {
+              uuid:rows[0].lecturer_uuid,
+              title_before:rows[0].title_before,
+              first_name:rows[0].first_name,
+              middle_name:rows[0].middle_name,
+              last_name:rows[0].last_name,
+              title_after:rows[0].title_after,
+              picture_url:rows[0].picture_url,
+              location:rows[0].location,
+              claim:rows[0].claim,
+              bio:rows[0].bio,
+              tags:filterTags,
+              price_per_hour:rows[0].price_per_hour,
+              contact:{
+                telephone_numbers:[rows[0].phone_number],
+                emails:[rows[0].email]
+              }
+            }
+          )
+          res.send(LecturerFull)
+        })
+      })
+     
+
+    }
+  })
+})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
