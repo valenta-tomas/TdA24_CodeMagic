@@ -367,6 +367,7 @@ router.put('/api/lecturers/:uuid', (req, res) => {
         console.error(err);
         return;
       }
+      
       db.all(TagsDataUpdate,(err,rows)=>{
         console.log(rows)
       })
