@@ -235,7 +235,44 @@ router.get('/api/lecturers', (req, res) => {
   });
 });
 
+router.delete('/api/lecturers/:uuid', (req, res)=>{
+  const getLecturers = "SELECT * FROM lecturers";
+  db.all(getLecturers, (err, rows) => {
 
+  const uuidParam = req.params;
+  console.log(rows)
+  const item = rows.find(item => item.lecturer_uuid === uuidParam.uuid);
+  if (item) {
+    const query1 = "DELETE FROM lecturers WHERE lecturer_uuid = ?";
+    const query2 = "DELETE FROM contact WHERE contact_uuid = ?";
+    const query3 = "DELETE FROM lecturer_tags WHERE lecturer_uuid = ?";
+    db.run(query1, uuidParam.uuid, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+  
+      db.run(query2, uuidParam.uuid, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+  
+        db.run(query3, uuidParam.uuid, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          res.status(204)
+          console.log("Záznamy byly úspěšně odstraněny.");
+
+        });
+      });
+    });
+  } else {
+    res.status(404).send('User not found');
+  }})
+})
 
 
 
