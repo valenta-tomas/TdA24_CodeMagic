@@ -8,7 +8,6 @@ const data= require('../public/data/lecturer.json');
 const db = new sqlite3.Database("data/db.sqlite");
 // db.run("CREATE TABLE lecturers_tags ( lecturer_uuid UUID NOT NULL, tag TEXT NOT NULL, PRIMARY KEY (lecturer_uuid, tag));")
 // db.run("DROP TABLE lecturers_tags;")
-console.log(db)
 
 class Lecturer {
   constructor(uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, telephone_numbers, emails, tags) {
@@ -33,7 +32,7 @@ class Lecturer {
   safe_data(){
     const insertSqlContact = `INSERT INTO contact (phone_number, email, contact_uuid) VALUES (?, ?, ?)`;
     const insertValuesContact = [this.telephone_numbers, this.emails, this.uuid];
-    console.log(insertValuesContact)
+    // console.log(insertValuesContact)
 
     db.run(insertSqlContact, insertValuesContact, (err) => {
       if (err) {
@@ -46,7 +45,7 @@ class Lecturer {
 
     const insertSqlLecturers = `INSERT INTO lecturers (lecturer_uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, contact_uuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const insertValuesLecturers = [ this.uuid, this.title_before, this.first_name, this.middle_name, this.last_name, this.title_after, this.picture_url, this.location, this.claim, this.bio, this.price_per_hour, this.uuid];
-    console.log(insertValuesLecturers)
+    // console.log(insertValuesLecturers)
 
     db.run(insertSqlLecturers, insertValuesLecturers, (err) => {
       if (err) {
@@ -66,7 +65,7 @@ class Lecturer {
 
       let checkValues=[this.tags[i].name];
       let checkTags_uuid=[this.tags[i].uuid];
-      console.log(checkValues)
+      // console.log(checkValues)
       db.all(getSql, checkValues,(err, rows)=>{
         if(err){
           // res.status(500).send('An error occurred while getting the tag UUID: ' + err);
@@ -182,10 +181,10 @@ class Lecturer {
       claim=req.body.claim
     }
 
-    console.log(tags)
+    // console.log(tags)
     const NewLecturer = new Lecturer(uuid, title_before, req.body.first_name, middle_name, req.body.last_name, title_after, req.body.picture_url, location, claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
     NewLecturer.safe_data()
-    console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
+    // console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     
     return res.status(200).json({
       "uuid": NewLecturer.uuid,
@@ -238,7 +237,7 @@ router.get('/api/lecturers', (req, res) => {
     let filtrovanaPole;
     for(let i=0;i<unikatniData.length; i++){
       let lecturerUUID = unikatniData[i].lecturer_uuid
-      console.log(lecturerUUID)
+      // console.log(lecturerUUID)
 
         filtrovanaPole = rows.filter(function(value) {
           if (value.lecturer_uuid === lecturerUUID) {
@@ -250,7 +249,7 @@ router.get('/api/lecturers', (req, res) => {
           return {uuid: value.tag_uuid, name: value.tag };
           // return { lecturer_uuid:value.lecturer_uuid, uuid: value.tag_uuid, name: value.tag };
         });
-        console.log(filtrovanaPole)
+        // console.log(filtrovanaPole)
       LecturerFull.push(
         {
           uuid:unikatniData[i].lecturer_uuid,
@@ -376,13 +375,41 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
 router.put('/api/lecturers/:uuid', (req, res) => {
   const LecturerDataUpdate = 'UPDATE lecturers SET first_name = ?, last_name = ?, middle_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, price_per_hour = ?,title_before=? WHERE lecturer_uuid = ?';
   
-  const getSql = `SELECT * FROM tags`;
+  const getSql = `SELECT * FROM tags WHERE tag = ?`;
 
   const ContactDataUpdate= 'UPDATE contact SET phone_number = ?, email = ? WHERE contact_uuid = ?';
   const TagsDataUpdate ='SELECT tags.*, lecturer_tags.* FROM tags, lecturer_tags WHERE tags.tag_uuid = lecturer_tags.tag_uuid;';
   const uuidParam = req.params.uuid;
   const updateData = req.body;
 
+
+  const deleteQuery = 'DELETE FROM lecturer_tags WHERE lecturer_uuid = ?';
+  const insertSql = `INSERT INTO lecturer_tags (lecturer_uuid, tag_uuid) VALUES (?, ?)`;
+  const insertSqlTag = `INSERT INTO tags (tag_uuid, tag) VALUES (?, ?)`;
+  console.log(uuidParam)
+  for(let i =0; i <updateData.tags.length; i++){
+
+    db.all(getSql,updateData.tags[i].name,(err,rows)=>{
+      console.log(updateData.tags)
+      if(err){
+        console.error(err)
+      }
+
+      if(rows.length>0){
+        console.log("zaznam existuje")
+        db.all(insertSql,uuidParam, rows[0].tag_uuid,()=>{
+        })
+      }
+      else{
+        tag_uuid =uuidv4()
+        db.all(insertSqlTag,tag_uuid, updateData.tags[i].name,()=>{
+        })
+        db.all(insertSql,uuidParam, tag_uuid,()=>{
+        })
+        console.log("zaznam neexistuje")
+      }
+    })
+  }
 
 
 
