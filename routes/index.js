@@ -140,8 +140,50 @@ class Lecturer {
       tags[i]["uuid"] = uuidv4()
     }
 
+    let title_after ;
+    if(req.body.title_after===null || req.body.title_after=="" || req.body.title_after==undefined ){
+      title_after=" "
+    }
+    else{
+      title_after=req.body.title_after
+    }
+
+    let title_before ;
+    if(req.body.title_before===null || req.body.title_before=="" || req.body.title_before==undefined ){
+      title_before=" "
+    }
+    else{
+      title_before=req.body.title_before
+    }
+
+
+    let middle_name ;
+    if(req.body.middle_name===null || req.body.middle_name=="" || req.body.middle_name==undefined ){
+      middle_name=" "
+    }
+    else{
+      middle_name=req.body.middle_name
+    }
+
+
+    let location ;
+    if(req.body.location===null || req.body.location=="" || req.body.location==undefined ){
+      location=" "
+    }
+    else{
+      location=req.body.location
+    }
+
+    let claim ;
+    if(req.body.claim===null || req.body.claim=="" || req.body.claim==undefined ){
+      claim=" "
+    }
+    else{
+      claim=req.body.claim
+    }
+
     console.log(tags)
-    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
+    const NewLecturer = new Lecturer(uuid, title_before, req.body.first_name, middle_name, req.body.last_name, title_after, req.body.picture_url, location, claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
     NewLecturer.safe_data()
     console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     
@@ -335,32 +377,15 @@ router.put('/api/lecturers/:uuid', (req, res) => {
   const LecturerDataUpdate = 'UPDATE lecturers SET first_name = ?, last_name = ?, middle_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, price_per_hour = ?,title_before=? WHERE lecturer_uuid = ?';
   
   const getSql = `SELECT * FROM tags`;
-  for(let i =0; i<req.body.tags.length; i++){
-    let checkValues =req.body.tags[i].name
-    db.all(getSql,(err, rows)=>{
-      if(err){
-        return;
-      }
 
-      for(let a= 0; a<rows.length; a++){
-        console.log(checkValues)
-        console.log(rows[a])
-        console.log(rows.length)
-        console.log("________")
-        if(checkValues==rows[a].tag){          
-          console.log("existuje "+ checkValues)
-        }
-        else{
-          console.log(rows[a]+ " NEexistuje")
-        }
-      }
-
-      });
-  }
   const ContactDataUpdate= 'UPDATE contact SET phone_number = ?, email = ? WHERE contact_uuid = ?';
   const TagsDataUpdate ='SELECT tags.*, lecturer_tags.* FROM tags, lecturer_tags WHERE tags.tag_uuid = lecturer_tags.tag_uuid;';
   const uuidParam = req.params.uuid;
   const updateData = req.body;
+
+
+
+
 
   db.run(LecturerDataUpdate, [
     updateData.first_name,
@@ -401,7 +426,7 @@ router.put('/api/lecturers/:uuid', (req, res) => {
 });
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'ExpressTEST' });
+  res.render('index', { title: 'ExpressTEST2' });
 });
 
 router.get('/api',(req, res)=>{
