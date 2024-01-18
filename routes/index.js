@@ -420,7 +420,10 @@ router.put('/api/lecturers/:uuid', (req, res) => {
     console.log(rows)
 
     if(rows.length>0){
-
+        if(rows.bio !==updateData.bio){
+          console.log(rows[0].bio)
+          updateData.bio= rows[0].bio
+        }
 
   db.all(deleteQuery,[uuidParam],(err)=>{
   })
