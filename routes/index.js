@@ -137,6 +137,14 @@ class Lecturer {
     for(let i=0; i<tags.length; i++){
       tags[i]["uuid"] = uuidv4()
     }
+    if(req.body.first_name ===null || req.body.last_name ===null){
+      console.log(req.body.first_name)
+      console.log(req.body.last_name )
+      res.status(400);
+      return;
+    }
+
+
 
     let title_after ;
     if(req.body.title_after===null || req.body.title_after=="" || req.body.title_after==undefined ){
@@ -327,8 +335,8 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
       return;
     }
 
-
-    else{
+    if(rows.length>0){
+      console.log(rows.length)
       db.all(getLecturer_tags,rows[0].lecturer_uuid,(err, rows2) =>{
         db.all(getTags,(err,rows3)=>{
           filterTags=[]
@@ -369,8 +377,11 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
           res.status(200).send(LecturerFull[0])
         })
       })
-     
-
+    
+    }
+    else{
+      res.status(404).send('User not found');
+      return;
     }
   })
 })
