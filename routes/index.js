@@ -306,19 +306,25 @@ router.delete('/api/lecturers/:uuid', (req, res)=>{
           return;
         }
   
-        db.run(query3, uuidParam.uuid, (err) => {
+        db.run(query3, uuidParam.uuid, (err,rows) => {
           if (err) {
             console.error(err);
             return;
           }
-          res.status(204)
-          console.log("Záznamy byly úspěšně odstraněny.");
+          if(rows.length<0) {
+            res.status(404).send({
+              "code": 404,
+              "message": "User not found"
+            });
+          }
+          if(rows.length>0) {
+            res.status(204)
+            console.log("Záznamy byly úspěšně odstraněny.");
 
+          }
         });
       });
     });
-  } else {
-    res.status(404).send('User not found');
   }})
 })
 
@@ -380,7 +386,12 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
     
     }
     else{
-      res.status(404).send('User not found');
+      res.status(404).send(
+      {
+        "code": 404,
+        "message": "User not found"
+      }
+      );
       return;
     }
   })
@@ -462,7 +473,9 @@ router.put('/api/lecturers/:uuid', (req, res) => {
               return;
             }
             let tagsArray =[]
+            if(rows.length>0){
             for(let i =0; i< rows.length; i++){
+
               if(rows[i].lecturer_uuid === uuidParam){
                 tagsArray.push(
                   {
@@ -495,7 +508,13 @@ router.put('/api/lecturers/:uuid', (req, res) => {
             console.log(uuidParam)
 
               res.status(200).send(Lecturer);
-
+            }
+            else{
+              res.status(404).send({
+                "code": 404,
+                "message": "User not found"
+              });
+            }
 
 
 
