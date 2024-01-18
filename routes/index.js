@@ -286,7 +286,7 @@ router.get('/api/lecturers', (req, res) => {
 router.delete('/api/lecturers/:uuid', (req, res)=>{
   const getLecturers = "SELECT * FROM lecturers";
   db.all(getLecturers, (err, rows) => {
-
+  if(rows.length>0){
   const uuidParam = req.params;
   console.log(rows)
   const item = rows.find(item => item.lecturer_uuid === uuidParam.uuid);
@@ -311,21 +311,23 @@ router.delete('/api/lecturers/:uuid', (req, res)=>{
             console.error(err);
             return;
           }
-          if(rows.length<0) {
-            res.status(404).send({
-              "code": 404,
-              "message": "User not found"
-            });
-          }
-          if(rows.length>0) {
-            res.status(204)
-            console.log("Záznamy byly úspěšně odstraněny.");
 
-          }
         });
       });
     });
+    res.status(204).send({
+      "code": 204
+    });
+    console.log("Záznamy byly úspěšně odstraněny.");
+  }
+  else{
+    res.status(404).send({
+      "code": 404,
+      "message": "User not found"
+    });
+  }
   }})
+  
 })
 
 router.get('/api/lecturers/:uuid', (req, res)=>{
@@ -410,6 +412,15 @@ router.put('/api/lecturers/:uuid', (req, res) => {
   const insertSql = `INSERT INTO lecturer_tags (lecturer_uuid, tag_uuid) VALUES (?, ?)`;
   const insertSqlTag = `INSERT INTO tags (tag_uuid, tag) VALUES (?, ?)`;
   console.log(uuidParam)
+
+  db.all('SELECT * FROM lecturers WHERE lecturer_uuid = ?;',uuidParam,(err,rows)=>{
+    if(err){
+      return
+    }
+    console.log(rows)
+
+    if(rows.length>0){
+
 
   db.all(deleteQuery,[uuidParam],(err)=>{
   })
@@ -509,14 +520,6 @@ router.put('/api/lecturers/:uuid', (req, res) => {
 
               res.status(200).send(Lecturer);
             }
-            else{
-              res.status(404).send({
-                "code": 404,
-                "message": "User not found"
-              });
-            }
-
-
 
           })
 }
@@ -533,7 +536,15 @@ router.put('/api/lecturers/:uuid', (req, res) => {
 
 
 
-
+}
+else{
+  res.status(404).send({
+    "code": 404,
+    "message": "User not found"
+  });
+  return;
+}
+})
 });
 /* GET home page. */
 router.get('/', function(req, res, next) {
