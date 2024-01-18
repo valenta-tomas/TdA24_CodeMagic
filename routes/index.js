@@ -137,59 +137,63 @@ class Lecturer {
     for(let i=0; i<tags.length; i++){
       tags[i]["uuid"] = uuidv4()
     }
-    if(req.body.first_name ===null || req.body.last_name ===null){
+    if(req.body.first_name ==null || req.body.last_name ==null){
       console.log(req.body.first_name)
       console.log(req.body.last_name )
-      res.status(400);
+      res.status(400).send({
+        "code": 400,
+        "message": "User not found"
+      });
       return;
     }
-
-
-
-    let title_after ;
-    if(req.body.title_after===null || req.body.title_after=="" || req.body.title_after==undefined ){
-      title_after=" "
-    }
     else{
-      title_after=req.body.title_after
-    }
-
-    let title_before ;
-    if(req.body.title_before===null || req.body.title_before=="" || req.body.title_before==undefined ){
-      title_before=" "
-    }
-    else{
-      title_before=req.body.title_before
-    }
 
 
-    let middle_name ;
-    if(req.body.middle_name===null || req.body.middle_name=="" || req.body.middle_name==undefined ){
-      middle_name=" "
-    }
-    else{
-      middle_name=req.body.middle_name
-    }
+
+    // let title_after ;
+    // if(req.body.title_after===null || req.body.title_after=="" || req.body.title_after==undefined ){
+    //   title_after=" "
+    // }
+    // else{
+    //   title_after=req.body.title_after
+    // }
+
+    // let title_before ;
+    // if(req.body.title_before===null || req.body.title_before=="" || req.body.title_before==undefined ){
+    //   title_before=" "
+    // }
+    // else{
+    //   title_before=req.body.title_before
+    // }
 
 
-    let location ;
-    if(req.body.location===null || req.body.location=="" || req.body.location==undefined ){
-      location=" "
-    }
-    else{
-      location=req.body.location
-    }
+    // let middle_name ;
+    // if(req.body.middle_name===null || req.body.middle_name=="" || req.body.middle_name==undefined ){
+    //   middle_name=" "
+    // }
+    // else{
+    //   middle_name=req.body.middle_name
+    // }
 
-    let claim ;
-    if(req.body.claim===null || req.body.claim=="" || req.body.claim==undefined ){
-      claim=" "
-    }
-    else{
-      claim=req.body.claim
-    }
+
+    // let location ;
+    // if(req.body.location===null || req.body.location=="" || req.body.location==undefined ){
+    //   location=" "
+    // }
+    // else{
+    //   location=req.body.location
+    // }
+
+    // let claim ;
+    // if(req.body.claim===null || req.body.claim=="" || req.body.claim==undefined ){
+    //   claim=" "
+    // }s
+    // else{
+    //   claim=req.body.claim
+    // }
 
     // console.log(tags)
-    const NewLecturer = new Lecturer(uuid, title_before, req.body.first_name, middle_name, req.body.last_name, title_after, req.body.picture_url, location, claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
+    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
     NewLecturer.safe_data()
     // console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     
@@ -214,13 +218,14 @@ class Lecturer {
           NewLecturer.emails             
       }
     });
-    
+  }
   } catch (error) {
     return res.json({
       status:400,
       success:false,
     });
   }
+  
 })
 router.get('/api/lecturers', (req, res) => {
   const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid JOIN lecturer_tags ON lecturers.lecturer_uuid = lecturer_tags.lecturer_uuid JOIN tags ON lecturer_tags.tag_uuid = tags.tag_uuid`;
