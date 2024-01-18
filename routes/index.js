@@ -303,7 +303,7 @@ router.delete('/api/lecturers/:uuid', (req, res)=>{
             console.error(err);
             return;
           }
-          res.status(200)
+          res.status(204)
           console.log("Záznamy byly úspěšně odstraněny.");
 
         });
@@ -326,7 +326,6 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
       res.status(404).send('User not found');
       return;
     }
-
 
 
     else{
