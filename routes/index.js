@@ -381,11 +381,14 @@ router.put('/api/lecturers/:uuid', (req, res) => {
   const uuidParam = req.params.uuid;
   const updateData = req.body;
 
-
   const deleteQuery = 'DELETE FROM lecturer_tags WHERE lecturer_uuid = ?';
   const insertSql = `INSERT INTO lecturer_tags (lecturer_uuid, tag_uuid) VALUES (?, ?)`;
   const insertSqlTag = `INSERT INTO tags (tag_uuid, tag) VALUES (?, ?)`;
   console.log(uuidParam)
+
+  db.all(deleteQuery,[uuidParam],(err)=>{
+  })
+  
   for(let i =0; i <updateData.tags.length; i++){
 
     db.all(getSql,updateData.tags[i].name,(err,rows)=>{
@@ -407,48 +410,97 @@ router.put('/api/lecturers/:uuid', (req, res) => {
         })
         console.log("zaznam neexistuje")
       }
+
+
+      db.run(LecturerDataUpdate, [
+        updateData.first_name,
+        updateData.last_name,
+        updateData.middle_name,
+        updateData.title_after,
+        updateData.picture_url,
+        updateData.location,
+        updateData.claim,
+        updateData.bio,
+        updateData.price_per_hour,
+        updateData.title_before,
+        uuidParam
+      ], (err) => {
+        if (err) {
+          res.status(404).send('User not found');
+          console.error(err);
+          return;
+        }
+        db.all(ContactDataUpdate, [
+          updateData.contact.telephone_numbers,
+          updateData.contact.emails,
+          uuidParam
+        ], (err) => {
+          if (err) {
+            res.status(404).send('User not found');
+            console.error(err);
+            return;
+          }
+          if(i==updateData.tags.length-1){
+          db.all(TagsDataUpdate,(err,rows)=>{
+            if (err) {
+              res.status(404).send('User not found');
+              console.error(err);
+              return;
+            }
+            let tagsArray =[]
+            for(let i =0; i< rows.length; i++){
+              if(rows[i].lecturer_uuid === uuidParam){
+                tagsArray.push(
+                  {
+                    uuid:rows[i].tag_uuid,
+                    name:rows[i].tag
+                  }
+                )
+              }
+            }
+            console.log(tagsArray)
+            let Lecturer = {
+              uuid:uuidParam,
+              title_before:updateData.title_before,
+              first_name:updateData.first_name,
+              middle_name:updateData.middle_name,
+              last_name:updateData.last_name,
+              title_after:updateData.title_after,
+              picture_url:updateData.picture_url,
+              location:updateData.location,
+              claim:updateData.claim,
+              bio:updateData.bio,
+              tags:tagsArray,
+              price_per_hour:updateData.price_per_hour,
+              contact:{
+                telephone_numbers:updateData.contact.telephone_numbers,
+                emails:updateData.contact.emails
+              }
+            }          
+            console.log(Lecturer.uuid)
+            console.log(uuidParam)
+            
+              res.status(200).send(Lecturer);
+
+
+
+
+          })
+}
+
+        });
+
+      });
+
+
     })
+    
   }
 
 
 
 
-  db.run(LecturerDataUpdate, [
-    updateData.first_name,
-    updateData.last_name,
-    updateData.middle_name,
-    updateData.title_after,
-    updateData.picture_url,
-    updateData.location,
-    updateData.claim,
-    updateData.bio,
-    updateData.price_per_hour,
-    updateData.title_before,
-    uuidParam
-  ], (err) => {
-    if (err) {
-      res.status(404).send('User not found');
-      console.error(err);
-      return;
-    }
-    db.all(ContactDataUpdate, [
-      updateData.contact.telephone_numbers,
-      updateData.contact.emails,
-      uuidParam
-    ], (err) => {
-      if (err) {
-        res.status(404).send('User not found');
-        console.error(err);
-        return;
-      }
-      
-      db.all(TagsDataUpdate,(err,rows)=>{
-        // console.log(rows)
-      })
-      res.status(200).send('Contact data updated successfully');
-    });
-    
-  });
+
 });
 /* GET home page. */
 router.get('/', function(req, res, next) {
