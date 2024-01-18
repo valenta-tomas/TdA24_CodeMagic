@@ -322,9 +322,13 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
   const getTags =  "SELECT * FROM tags";
   db.all(getLecturer,uuidParam.uuid, (err, rows) => {
     if(err){
+      console.log("neni")
       res.status(404).send('User not found');
       return;
     }
+
+
+
     else{
       db.all(getLecturer_tags,rows[0].lecturer_uuid,(err, rows2) =>{
         db.all(getTags,(err,rows3)=>{
@@ -363,7 +367,7 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
               }
             }
           )
-          res.send(LecturerFull[0])
+          res.status(200).send(LecturerFull[0])
         })
       })
      
