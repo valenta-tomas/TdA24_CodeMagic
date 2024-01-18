@@ -363,7 +363,7 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
               }
             }
           )
-          res.send(LecturerFull)
+          res.send(LecturerFull[0])
         })
       })
      
@@ -479,7 +479,7 @@ router.put('/api/lecturers/:uuid', (req, res) => {
             }          
             console.log(Lecturer.uuid)
             console.log(uuidParam)
-            
+
               res.status(200).send(Lecturer);
 
 
