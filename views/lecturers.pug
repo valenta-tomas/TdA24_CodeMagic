@@ -2,12 +2,13 @@ extends layout
 
 block content
   each n in lector
-    a(href=n.uuid) 
+    a(href="/api/lecturers/"+n.uuid) 
       img(src=n.picture_url, alt="")
       p= n.claim
       p= n.price_per_hour
       p= n.location
       p= n.tags[0].name
+<<<<<<< Updated upstream
       p= n.tags[1].name
     
   form(action="/api/lecturers", method="get")
@@ -25,3 +26,24 @@ block content
     //-   each tag in tagArray
     //-     option(value=tag) #{tag}
     button(type="submit") Filtrovat
+=======
+      if(n.tags[1] && n.tags[1].name)
+        p= n.tags[1].name
+      else
+        p= "..."
+
+  form(action="/api/lecturers", method="get" class="flex flex-col text-white")
+    label(for="minPrice" class="text-xl my-3") Minimální cena:
+    input(type="number", id="minPrice", name="minPrice", placeholder="Minimální cena" class="h-9 text-black")
+
+    label(for="maxPrice" class="text-xl my-3") Maximální cena:
+    input(type="number", id="maxPrice", name="maxPrice", placeholder="Maximální cena" class="h-9 text-black")
+
+    label(for="city" class="text-xl my-3") V kterém městě:
+    input(type="text", name="city", id="city" class="h-9 text-black")
+    label(for="tags" class="text-xl my-3") Vybrané tagy:
+    select(name="tags", id="tags", multiple class="text-black h-32 text-lg")
+      each tag in tagArray
+        option(value=tag) #{tag} 
+    button(type="submit" class="text-xl my-3") Filtrovat
+>>>>>>> Stashed changes

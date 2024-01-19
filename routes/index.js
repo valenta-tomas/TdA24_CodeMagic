@@ -264,6 +264,9 @@ router.get('/api/lecturers', (req, res) => {
         // console.log(filtrovanaPole)
         let telNumbers = unikatniData[i].phone_number.split(",")
         let Emils = unikatniData[i].email.split(",")
+
+
+
       LecturerFull.push(
         {
           uuid:unikatniData[i].lecturer_uuid,
@@ -287,6 +290,7 @@ router.get('/api/lecturers', (req, res) => {
     }
     const minPrice = parseInt(req.query.minPrice) || 0;
     const maxPrice = parseInt(req.query.maxPrice) || Infinity;
+<<<<<<< Updated upstream
     const city = req.query.city || "";
 
 
@@ -306,6 +310,38 @@ router.get('/api/lecturers', (req, res) => {
 
 
     res.render('lecturers', { lector: filtrovaneProdukty });
+=======
+
+
+    const TAGS = req.query.tags || "";
+
+    const filterUniqueByTag = (value, index, self) => {
+      return self.findIndex(obj => obj.tag === value.tag) === index;
+    };
+    let arrayTAgs = []
+    const dataWithoutDuplicates = rows.filter(filterUniqueByTag);
+
+    dataWithoutDuplicates.map(item=>{
+      arrayTAgs.push(item.tag)
+    })
+    console.log(TAGS)
+    const city = req.query.city || "";
+    const filtrovaneProdukty = LecturerFull.filter(produkt => {
+      if(city !=="" ||minPrice !==0 || maxPrice !== Infinity){
+      const cenaSplnujePodminky = produkt.price_per_hour >= minPrice && produkt.price_per_hour <= maxPrice;
+      
+        const mestoSplnujePodminky = city.toLowerCase() === produkt.location.toLowerCase();
+    
+        // Pokud cena a město splňují obě podmínky, zahrnout produkt ve výsledku
+        return cenaSplnujePodminky && mestoSplnujePodminky;
+      }
+      else{
+        return produkt
+      }
+
+  });
+    res.render('lecturers', { lector: filtrovaneProdukty, tagArray:arrayTAgs});
+>>>>>>> Stashed changes
     // res.status(200).send(LecturerFull)
   });
 });
