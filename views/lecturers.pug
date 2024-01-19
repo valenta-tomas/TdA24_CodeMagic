@@ -9,3 +9,19 @@ block content
       p= n.location
       p= n.tags[0].name
       p= n.tags[1].name
+    
+  form(action="/api/lecturers", method="get")
+    label(for="minPrice") Minimální cena:
+    input(type="number", id="minPrice", name="minPrice", placeholder="Minimální cena")
+
+    label(for="maxPrice") Maximální cena:
+    input(type="number", id="maxPrice", name="maxPrice", placeholder="Maximální cena")
+
+    label(for="city") V kterém městě:
+    input(type="text", name="city", id="city")
+
+    //- label(for="tags") Vybrané tagy:
+    //- select(name="tags", id="tags", multiple)
+    //-   each tag in tagArray
+    //-     option(value=tag) #{tag}
+    button(type="submit") Filtrovat
