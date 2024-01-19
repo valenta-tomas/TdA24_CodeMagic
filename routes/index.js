@@ -290,27 +290,6 @@ router.get('/api/lecturers', (req, res) => {
     }
     const minPrice = parseInt(req.query.minPrice) || 0;
     const maxPrice = parseInt(req.query.maxPrice) || Infinity;
-<<<<<<< Updated upstream
-    const city = req.query.city || "";
-
-
-      const filtrovaneProdukty = LecturerFull.filter(produkt => {
-        if(minPrice !==0 || maxPrice !== Infinity || city !== ""){
-          const cenaSplnujePodminky = produkt.price_per_hour >= minPrice && produkt.price_per_hour <= maxPrice;
-          const mestoSplnujePodminky = city.toLowerCase() == produkt.location.toLowerCase();
-      
-          // Pokud cena nebo město splňuje podmínky, zahrnout produkt ve výsledku
-          return cenaSplnujePodminky && mestoSplnujePodminky;
-        }
-        return LecturerFull;
-
-  });
-
-
-
-
-    res.render('lecturers', { lector: filtrovaneProdukty });
-=======
 
 
     const TAGS = req.query.tags || "";
@@ -341,7 +320,6 @@ router.get('/api/lecturers', (req, res) => {
 
   });
     res.render('lecturers', { lector: filtrovaneProdukty, tagArray:arrayTAgs});
->>>>>>> Stashed changes
     // res.status(200).send(LecturerFull)
   });
 });
