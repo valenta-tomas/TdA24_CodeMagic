@@ -390,7 +390,35 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
               }
             }
           )
-          res.status(200).send(LecturerFull[0])
+          function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+          }
+
+            console.log(LecturerFull)
+            console.log(LecturerFull[0].tags)
+            const l = LecturerFull[0].tags.length-1
+          
+          res.render('lecturer', { 
+            title_before: LecturerFull[0].title_before,
+            title:"lecturer"
+            ,full_name: LecturerFull[0].title_before +" "+LecturerFull[0].first_name+" "+LecturerFull[0].middle_name +" "+LecturerFull[0].last_name+" "+LecturerFull[0].title_after
+            ,picture_url:LecturerFull[0].picture_url
+            ,location:LecturerFull[0].location
+            ,price_per_hour:LecturerFull[0].price_per_hour
+            ,claim:LecturerFull[0].claim
+            ,bio:LecturerFull[0].bio
+            ,telephone_numbers:telNumbers
+            ,emails:Emils
+            ,tag1 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag2 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag3 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag4 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag5 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag6 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag7 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,tag8 : LecturerFull[0].tags[getRandomInt(0, l)].name
+           });
+          // res.status(200).send(LecturerFull[0])
         })
       })
     

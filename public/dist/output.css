@@ -701,6 +701,10 @@ video {
   flex-direction: column;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
 .rounded-full {
   border-radius: 9999px;
 }
@@ -735,6 +739,11 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-pink-700 {
+  --tw-text-opacity: 1;
+  color: rgb(190 24 93 / var(--tw-text-opacity));
 }
 
 @media (min-width: 640px) {
@@ -1018,6 +1027,14 @@ video {
 
   .xl\:mt-7 {
     margin-top: 1.75rem;
+  }
+
+  .xl\:mb-0 {
+    margin-bottom: 0px;
+  }
+
+  .xl\:mt-12 {
+    margin-top: 3rem;
   }
 
   .xl\:block {

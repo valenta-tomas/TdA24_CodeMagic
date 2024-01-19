@@ -3,10 +3,10 @@ extends layout
 block content
 
   //- first part
-  div(class="flex mx-auto flex-col my-9 mx-8 w-10/12 lg:flex-row lg:my-0 lg:mx-0 lg:w-screen lg:h-screen sm:w-10/12 sm:mx-auto size-full")
+  div(class="flex mx-auto flex-col my-9 mx-8 w-10/12 lg:flex-row lg:my-0 lg:mx-0 lg:w-screen lg:h-screen sm:w-10/12 sm:mx-auto size-full overflow-x-hidden")
     div(class="w-full lg:w-1/3")
       //- logo
-      img(src="./img/logo.png", alt="logo", class="w-1/4 mb-10 lg:w-5/12 lg:ml-12 lg:mt-10 sm:float-left")
+      img(src="../../../img/logo.png", alt="logo", class="w-1/4 mb-10 lg:w-5/12 lg:ml-12 lg:mt-10 sm:float-left")
 
       //- full_name
       h1(class="text-3xl font-bold w-full text-center mb-8 sm:hidden lg:hidden")= full_name
@@ -15,7 +15,7 @@ block content
       div(class="lg:ml-20")
         div(class="float-left mb-8 relative w-1/2 lg:w-4/6 sm:float-left")
           img(src=picture_url, alt= full_name, class="rounded-full relative w-80 sm:w-full")
-          img(src="./img/sipka.png", alt="ikonka šipky", class="rotate-[85deg] w-12 h-12 sm:hidden lg:block xl:block absolute bottom-[-10%] lg:left-[-7%] lg:bottom-[-15%] lg:w-24 lg:h-24 ")
+          img(src="../../../img/sipka.png", alt="ikonka šipky", class="rotate-[85deg] w-12 h-12 sm:hidden lg:block xl:block absolute bottom-[-10%] lg:left-[-7%] lg:bottom-[-15%] lg:w-24 lg:h-24 ")
         h1(class="hidden lg:hidden sm:float-left sm:block sm:w-full sm:text-4xl sm:text-center mx-auto sm:text-center")= full_name
         div(class="float-left  sm:float-left sm:w-full  w-1/2 lg:hidden mt-12")
           ul(class="text-white text-base my-auto list-outside ml-6 sm:text-left text-center sm:text-center")
@@ -33,7 +33,7 @@ block content
     //- second part
     div(class="flex flex-col w-full lg:w-2/4 hover:size-full")
       h1(class="hidden text-3xl lg:text-5xl lg:font-bold lg:mt-28 lg:mb-10 lg:w-max lg:relative lg:block xl:text-6xl")= full_name
-      div(class="text-base mb-10 lg:text-xl lg:w-[90%] xl:mt-5 xl:text-3xl")
+      div(class="text-base mb-10 lg:text-xl lg:w-[90%] xl:mt-5 xl:text-3xl text-white")
         != bio
       p(class="hidden lg:block lg:text-base lg:my-6 xl:text-3xl xl:mt-5")= claim
       ul(class="hidden lg:block lg:w-1/2 lg:text-white lg:list-outside xl:text-3xl xl:mt-7")
@@ -44,45 +44,45 @@ block content
     div(class="flex flex-col w-full lg:w-1/4 lg:h-screen hover:size-full")
 
       div(class ="w-full relative lg:w-full lg:h-[15%]") 
-        img(src="./img/TdA_ikony_pocitac_white.png",
+        img(src="../../../img/TdA_ikony_pocitac_white.png",
             alt="ikonka počítače",
             class="absolute w-20 -left-2 bottom-0 lg:w-24 lg:left-0 animate-pulse")
         div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%] xl:mt-4")
-          p(class="lg:mb-5")= tag1
+          p(class="lg:mb-5 xl:mb-0 xl:mt-12")= tag1
           p= tag2
 
       div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
-        img(src="./img/TdA_ikony_napad_blue.png",
+        img(src="../../../img/TdA_ikony_napad_blue.png",
             alt="ikonka nápadu",
             class="absolute w-20 -right-2 bottom-0 lg:w-24 lg:-left-0 animate-pulse")
         div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl left-0 lg:w-[70%]")
-          p(class="lg:mb-5")=tag3
+          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag3
           p=tag4
 
       div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
-        img(src="./img/TdA_ikony_studium_white.png",
+        img(src="../../../img/TdA_ikony_studium_white.png",
             alt="ikonka studia",
             class="absolute w-20 -left-2 bottom-0 lg:w-24 lg:left-0 animate-pulse")
         div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%]")
-          p(class="lg:mb-5")=tag5
+          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag5
           p=tag6
 
 
       div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
-        img(src="./img/TdA_ikony_konverzace_blue.png",
+        img(src="../../../img/TdA_ikony_konverzace_blue.png",
             alt="ikonka konverzace",
             class="absolute w-20 -right-0 bottom-0 lg:w-24 lg:-left-0 animate-pulse")
         div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%]")
-          p(class="lg:mb-5")=tag7
+          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag7
           p=tag9
 
   
       div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
-        img(src="./img/TdA_ikony_nastaveni_white.png",
+        img(src="../../../img/TdA_ikony_nastaveni_white.png",
             alt="ikonka nastavení",
             class="absolute w-20 -left-2 bottom-0 lg:w-24 lg:left-0 animate-pulse")
         div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%]")
-          p(class="lg:mb-5")=tag8
+          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag8
           p=tag11
 
       div(class="w-full mt-20 text-center lg:hidden")
