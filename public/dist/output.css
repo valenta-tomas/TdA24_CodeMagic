@@ -534,6 +534,10 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .absolute {
   position: absolute;
 }
@@ -564,6 +568,18 @@ video {
 
 .left-0 {
   left: 0px;
+}
+
+.right-11 {
+  right: 2.75rem;
+}
+
+.top-28 {
+  top: 7rem;
+}
+
+.top-32 {
+  top: 8rem;
 }
 
 .float-left {
@@ -597,6 +613,21 @@ video {
 .my-3 {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.my-11 {
+  margin-top: 2.75rem;
+  margin-bottom: 2.75rem;
+}
+
+.my-20 {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .mb-10 {
@@ -639,6 +670,14 @@ video {
   margin-top: 1.25rem;
 }
 
+.mt-40 {
+  margin-top: 10rem;
+}
+
+.ml-20 {
+  margin-left: 5rem;
+}
+
 .block {
   display: block;
 }
@@ -665,6 +704,10 @@ video {
 
 .h-9 {
   height: 2.25rem;
+}
+
+.h-screen {
+  height: 100vh;
 }
 
 .w-1\/2 {
@@ -703,6 +746,26 @@ video {
   width: 33.333333%;
 }
 
+.w-screen {
+  width: 100vw;
+}
+
+.w-2\/4 {
+  width: 50%;
+}
+
+.w-2\/3 {
+  width: 66.666667%;
+}
+
+.w-auto {
+  width: auto;
+}
+
+.w-2 {
+  width: 0.5rem;
+}
+
 .flex-initial {
   flex: 0 1 auto;
 }
@@ -730,6 +793,10 @@ video {
   list-style-image: url(../img/sipka.png);
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -738,12 +805,25 @@ video {
   align-items: center;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .overflow-x-hidden {
   overflow-x: hidden;
 }
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.border-r {
+  border-right-width: 1px;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .text-center {
@@ -861,6 +941,10 @@ video {
 }
 
 @media (min-width: 1024px) {
+  .lg\:fixed {
+    position: fixed;
+  }
+
   .lg\:relative {
     position: relative;
   }
@@ -879,6 +963,10 @@ video {
 
   .lg\:left-\[-7\%\] {
     left: -7%;
+  }
+
+  .lg\:float-left {
+    float: left;
   }
 
   .lg\:mx-0 {
@@ -937,8 +1025,16 @@ video {
     margin-top: 8rem;
   }
 
+  .lg\:ml-40 {
+    margin-left: 10rem;
+  }
+
   .lg\:block {
     display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
   }
 
   .lg\:hidden {
@@ -1010,12 +1106,24 @@ video {
     width: 100vw;
   }
 
+  .lg\:w-3\/4 {
+    width: 75%;
+  }
+
+  .lg\:w-2\/3 {
+    width: 66.666667%;
+  }
+
   .lg\:list-outside {
     list-style-position: outside;
   }
 
   .lg\:flex-row {
     flex-direction: row;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
   }
 
   .lg\:text-justify {

@@ -227,7 +227,7 @@ class Lecturer {
   }
   
 })
-router.get('/api/lecturers', (req, res) => {
+router.get('/', (req, res) => {
   const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid JOIN lecturer_tags ON lecturers.lecturer_uuid = lecturer_tags.lecturer_uuid JOIN tags ON lecturer_tags.tag_uuid = tags.tag_uuid`;
   let LecturerFull=[];
   db.all(getLecturers, (err, rows) => {
@@ -324,7 +324,7 @@ router.get('/api/lecturers', (req, res) => {
   });
 });
 
-router.delete('/api/lecturers/:uuid', (req, res)=>{
+router.delete('/lecturers/:uuid', (req, res)=>{
   const getLecturers = "SELECT * FROM lecturers";
   db.all(getLecturers, (err, rows) => {
   if(rows.length>0){
@@ -371,7 +371,7 @@ router.delete('/api/lecturers/:uuid', (req, res)=>{
   
 })
 
-router.get('/api/lecturers/:uuid', (req, res)=>{
+router.get('/lecturers/:uuid', (req, res)=>{
   const uuidParam = req.params;
   let LecturerFull=[];
   const getLecturer = "SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid =contact.contact_uuid WHERE lecturer_uuid = ?";
@@ -468,7 +468,7 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
     }
   })
 })
-router.put('/api/lecturers/:uuid', (req, res) => {
+router.put('/lecturers/:uuid', (req, res) => {
   const LecturerDataUpdate = 'UPDATE lecturers SET first_name = ?, last_name = ?, middle_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, price_per_hour = ?,title_before=? WHERE lecturer_uuid = ?';
   
   const getSql = `SELECT * FROM tags WHERE tag = ?`;
@@ -620,9 +620,9 @@ else{
 })
 });
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'ExpressTEST2' });
-});
+// router.get('/', function(req, res, next) {
+//   res.render('index', { title: 'ExpressTEST2' });
+// });
 
 router.get('/api',(req, res)=>{
   res.json({secret:"The cake is a lie"});
