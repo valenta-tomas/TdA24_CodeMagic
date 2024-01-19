@@ -262,6 +262,8 @@ router.get('/api/lecturers', (req, res) => {
           // return { lecturer_uuid:value.lecturer_uuid, uuid: value.tag_uuid, name: value.tag };
         });
         // console.log(filtrovanaPole)
+        let telNumbers = unikatniData[i].phone_number.split(",")
+        let Emils = unikatniData[i].email.split(",")
       LecturerFull.push(
         {
           uuid:unikatniData[i].lecturer_uuid,
@@ -277,8 +279,8 @@ router.get('/api/lecturers', (req, res) => {
           tags:filtrovanaPole,
           price_per_hour:unikatniData[i].price_per_hour,
           contact:{
-            telephone_numbers:[unikatniData[i].phone_number],
-            emails:[unikatniData[i].email]
+            telephone_numbers:telNumbers,
+            emails:Emils
           }
         }
       )
@@ -365,7 +367,8 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
               // return { lecturer_uuid:value.lecturer_uuid, uuid: value.tag_uuid, name: value.tag };
             });
           }
-
+          let telNumbers = rows[0].phone_number.split(",")
+          let Emils = rows[0].email.split(",")
           console.log(filterTags)
           LecturerFull.push(
             {
@@ -382,8 +385,8 @@ router.get('/api/lecturers/:uuid', (req, res)=>{
               tags:filterTags,
               price_per_hour:rows[0].price_per_hour,
               contact:{
-                telephone_numbers:[rows[0].phone_number],
-                emails:[rows[0].email]
+                telephone_numbers:telNumbers,
+                emails:Emils
               }
             }
           )
