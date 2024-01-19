@@ -1,6 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  p Hello TdA
+  each n in lector
+    a(href=n.uuid) 
+      img(src=n.picture_url, alt="")
+      p= n.claim
+      p= n.price_per_hour
+      p= n.location
+      p= n.tags[0].name
+      p= n.tags[1].name

@@ -285,8 +285,8 @@ router.get('/api/lecturers', (req, res) => {
         }
       )
     }
-
-    res.status(200).send(LecturerFull)
+    res.render('lecturers', { lector: LecturerFull });
+    // res.status(200).send(LecturerFull)
   });
 });
 
