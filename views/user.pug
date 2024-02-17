@@ -1,0 +1,5 @@
+extends layout
+block content
+    h1= "ahoj"
+    form(action="/logout?_method=DELETE" method="POST")
+        button(type="submit") Log Out

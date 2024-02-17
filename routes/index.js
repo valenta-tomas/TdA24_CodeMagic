@@ -6,8 +6,27 @@ const sqlite3 = require('sqlite3').verbose();
 const data= require('../public/data/lecturer.json');
 
 const bcrypt = require('bcrypt')
-
+const passport = require('passport')
+const users=[]
 const db = new sqlite3.Database("data/db.sqlite");
+db.all("SELECT * FROM users", (err, rows) => {
+  if (err) {
+      console.error(err.message);
+  }
+  // Vypsání získaných dat do konzole
+
+  users.push(...rows)
+  console.log(users)
+  const initializePassport = require('../passport-config')
+  initializePassport(passport,
+  name => users.find(user => user.name === name),
+  id => users.find(user => user.lecturer_uuid === id)
+  )
+});
+
+
+
+
 // db.run("CREATE TABLE lecturers_tags ( lecturer_uuid UUID NOT NULL, tag TEXT NOT NULL, PRIMARY KEY (lecturer_uuid, tag));")
 // db.run("DROP TABLE lecturers_tags;")
 
@@ -33,7 +52,24 @@ class Lecturer {
 
     this.account = account;
   }
+  AccountRegister = async()=>{
+          
+    try{
+      const salt = await bcrypt.genSalt()
+      const hasedPassword = await bcrypt.hash(this.account.password, salt)
 
+
+      const insertSqlUSers = `INSERT INTO users (name, password, lecturer_uuid) VALUES (?, ?, ?)`;
+      const Account = [this.account.userName,hasedPassword, this.uuid]
+      db.run(insertSqlUSers,Account,(err)=>{
+        if(err)
+          return;
+      }) 
+  }
+  catch{
+    return;
+  }
+  }
   save_data(){
     const insertSqlContact = `INSERT INTO contact (phone_number, email, contact_uuid) VALUES (?, ?, ?)`;
     const insertValuesContact = [this.telephone_numbers, this.emails, this.uuid];
@@ -117,27 +153,6 @@ class Lecturer {
       
           // res.status(200).send();
         });
-        const AccountRegister = async()=>{
-          
-          try{
-            const salt = await bcrypt.genSalt()
-            const hasedPassword = await bcrypt.hash(this.account.password, salt)
-
-
-            const insertSqlUSers = `INSERT INTO users (name, password, lecturer_uuid) VALUES (?, ?, ?)`;
-            const Account = [this.account.userName,hasedPassword, this.uuid]
-            db.run(insertSqlUSers,Account,(err)=>{
-              if(err)
-                return;
-              else{
-                res.status(200)
-              }
-            }) 
-        }
-        catch{
-          return;
-        }
-        }
 
       })
     }
@@ -150,7 +165,6 @@ class Lecturer {
       console.log(this.tags)
   }
 }
-
 
 
   db.run('CREATE TABLE IF NOT EXISTS contact ( phone_number TEXT NOT NULL, email TEXT NOT NULL, contact_uuid UUID NOT NULL, PRIMARY KEY (contact_uuid));')
@@ -176,54 +190,9 @@ class Lecturer {
       return;
     }
     else{
-
-
-
-    // let title_after ;
-    // if(req.body.title_after===null || req.body.title_after=="" || req.body.title_after==undefined ){
-    //   title_after=" "
-    // }
-    // else{
-    //   title_after=req.body.title_after
-    // }
-
-    // let title_before ;
-    // if(req.body.title_before===null || req.body.title_before=="" || req.body.title_before==undefined ){
-    //   title_before=" "
-    // }
-    // else{
-    //   title_before=req.body.title_before
-    // }
-
-
-    // let middle_name ;
-    // if(req.body.middle_name===null || req.body.middle_name=="" || req.body.middle_name==undefined ){
-    //   middle_name=" "
-    // }
-    // else{
-    //   middle_name=req.body.middle_name
-    // }
-
-
-    // let location ;
-    // if(req.body.location===null || req.body.location=="" || req.body.location==undefined ){
-    //   location=" "
-    // }
-    // else{
-    //   location=req.body.location
-    // }
-
-    // let claim ;
-    // if(req.body.claim===null || req.body.claim=="" || req.body.claim==undefined ){
-    //   claim=" "
-    // }s
-    // else{
-    //   claim=req.body.claim
-    // }
-
-    // console.log(tags)
     const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags, req.body.account)
     NewLecturer.save_data()
+    NewLecturer.AccountRegister()
     // console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     
     return res.status(200).json({
@@ -652,23 +621,22 @@ else{
 // router.get('/', function(req, res, next) {
 //   res.render('index', { title: 'ExpressTEST2' });
 // });
-router.get('/login', (req, res)=>{
+router.get('/user',checkAuthenticated, (req, res)=>{
+  res.render('user.pug')
+})
+router.get('/login',checkNotAuthenticated, (req, res)=>{
   res.render('login.pug')
 })
-router.post('/login', async(req, res)=>{
-  try{
-      const salt = await bcrypt.genSalt()
-      const hasedPassword = await bcrypt.hash(req.body.password, salt)
-      const user ={
-        name:req.body.name,
-        password: hasedPassword
-      }
-      console.log(user) 
-  }
-  catch{
-    res.redirect('/login')
-  }
-
+router.post('/login',checkNotAuthenticated, passport.authenticate('local',{
+  successRedirect: '/user',
+  failureRedirect:'/login',
+  failureFlash:true
+}))
+router.delete('/logout', (req, res, next) => {
+  req.logOut(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/login');
+  });
 })
 
 router.get('/api',(req, res)=>{
@@ -697,4 +665,19 @@ router.get('/lecturer',(req, res)=>{
     ,tag8 : data.tags[7].name
    });
 })
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  }
+
+  res.redirect('/login')
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect('/user')
+  }
+  next()
+}
 module.exports = router;

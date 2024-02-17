@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -11,10 +15,15 @@ if(!fs.existsSync(path.join(__dirname, 'data'))){
   // create data directory if it does not exist
   fs.mkdirSync(path.join(__dirname, 'data'));
 }
+const methodOverride = require('method-override')
+const session = require('express-session')
+
 const db = new sqlite3.Database(path.join(__dirname, 'data','db.sqlite'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const flash = require('express-flash');
+const passport = require('passport');
 
 var app = express();
 
@@ -23,11 +32,23 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(methodOverride('_method'))
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(flash())
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave:false,
+  saveUninitialized:false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -1,11 +1,14 @@
 extends layout
 
+
 block content
-  form(action="/login", method="post")
+  if messages.error
+    div= messages.error
+  form(action="/login", method="POST")
     div
-        label(for="name") Jméno
-        input(type="text" id="name" name="name" required)
+      label(for="name") Jméno
+      input(type="text" id="name" name="name" required)
     div
-        label(for="password") Heslo
-        input(type="password" id="password" name="password" required)
+      label(for="password") Heslo
+      input(type="password" id="password" name="password" required)
     button(type="submit") Login  
