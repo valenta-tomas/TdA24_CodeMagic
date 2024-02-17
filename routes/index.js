@@ -623,7 +623,9 @@ else{
 // router.get('/', function(req, res, next) {
 //   res.render('index', { title: 'ExpressTEST2' });
 // });
-
+router.get('/login', (req, res)=>{
+  res.render('login.pug')
+})
 router.get('/api',(req, res)=>{
   res.json({secret:"The cake is a lie"});
 })

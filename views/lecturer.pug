@@ -2,90 +2,125 @@ extends layout
 
 block content
 
-  //- first part
-  div(class="flex mx-auto flex-col my-9 mx-8 w-10/12 lg:flex-row lg:my-0 lg:mx-0 lg:w-screen lg:h-screen sm:w-10/12 sm:mx-auto size-full overflow-x-hidden")
-    div(class="w-full lg:w-1/3")
-      //- logo
-      img(src="../../../img/logo.png", alt="logo", class="w-1/4 mb-10 lg:w-5/12 lg:ml-12 lg:mt-10 sm:float-left")
-
-      //- full_name
-      h1(class="text-3xl font-bold w-full text-center mb-8 sm:hidden lg:hidden")= full_name
-
-      //- img
-      div(class="lg:ml-20")
-        div(class="float-left mb-8 relative w-1/2 lg:w-4/6 sm:float-left")
-          img(src=picture_url, alt= full_name, class="rounded-full relative w-80 sm:w-full")
-          img(src="../../../img/sipka.png", alt="ikonka šipky", class="rotate-[85deg] w-12 h-12 sm:hidden lg:block xl:block absolute bottom-[-10%] lg:left-[-7%] lg:bottom-[-15%] lg:w-24 lg:h-24 ")
-        h1(class="hidden lg:hidden sm:float-left sm:block sm:w-full sm:text-4xl sm:text-center mx-auto")= full_name
-        div(class="float-left  sm:float-left sm:w-full  w-1/2 lg:hidden mt-12")
-          ul(class="text-white text-base my-auto list-outside ml-6 sm:text-left text-center ")
-            li= "Lokace: "+location
-            li="Cena za hodinu: "+price_per_hour+" Kč"
-        p(class="clear-both text-base lg:hidden text-center mb-5")= claim
-
-
-      //- contact   list-image-[url(../img/sipka.png)]     
-      div(class="hidden lg:block lg:text-justify lg:w-7/12 lg:mt-32 lg:ml-12 absolute bottom-0 xl:bottom-16")
-        h2(class="lg:text-3xl lg:uppercase lg:text-white")="Kontakt" 
-        p(class="lg:my-2 text-base")= telephone_numbers
-        p(class="lg:my-2 text-base")=emails
-
-    //- second part
-    div(class="flex flex-col w-full lg:w-2/4 hover:size-full")
-      h1(class="hidden text-3xl lg:text-5xl lg:font-bold lg:mt-28 lg:mb-10 lg:w-max lg:relative lg:block xl:text-6xl")= full_name
-      div(class="text-base mb-10 lg:text-xl lg:w-[90%] xl:mt-5 xl:text-3xl text-white")
-        != bio
-      p(class="hidden lg:block lg:text-base lg:my-6 xl:text-3xl xl:mt-5")= claim
-      ul(class="hidden lg:block lg:w-1/2 lg:text-white lg:list-outside xl:text-3xl xl:mt-7")
+  main(class="max-w-full box-border text-white m-0 p-0 sm:text-lg lg:grid lg:grid-cols-3 lg:gap-x-0 max-h-screen lg:overflow-hidden") 
+    //- first part
+    section(class="max-w-[90%] mx-auto lg:w-full")
+      a(href="../../" rel="noopener noreferrer") 
+        img(loading="lazy" src="../../../img/logo.png", alt="logo", class="w-40 pt-8 pl-4 sm:w-56 sm:inline-block lg:block lg:pl-0")
+      h1(class="text-2xl text-center font-bold py-6 sm:hidden")= full_name
+        //- img
+      div(class="max-w-[60%] mx-auto mb-6 sm:float-right relative sm:w-4/12 sm:inline-block sm:mt-16 sm:m-0 lg:block lg:w-full lg:mx-auto lg:float-none lg:mb-[8vh]")
+        img(loading="lazy" src=picture_url, alt= full_name, class="rounded-full w-full lg:min-w-[120%]")
+        img(loading="lazy" src="../../../img/sipka.png", alt="ikonka šipky", class="hidden sm:block absolute left-0 bottom-0 rotate-90 w-3/12")
+      h1(class="hidden text-5xl font-bold pl-10 sm:block clear-both max-w-7xl sm:mt-0 lg:hidden")= full_name    
+      p(class="text-center mt-7 mb-6 sm:clear-both lg:hidden")= claim
+      ul(class="max-w-[40%] inline-block text-balance lg:hidden")
         li= "Lokace: "+location
         li="Cena za hodinu: "+price_per_hour+" Kč"
+      button(onclick="showForm()" class="bg-[#74C7D3] w-32 h-12 rounded-lg inline-block float-right mr-7 text-lg sm:mr-24 lg:float-none lg:w-56 lg:h-20 lg:text-4xl lg:block lg:mx-auto ") Rezervovat
+      
 
-    //- third part
-    div(class="flex flex-col w-full lg:w-1/4 lg:h-screen hover:size-full")
 
-      div(class ="w-full relative lg:w-full lg:h-[15%]") 
+        //- contact   list-image-[url(../img/sipka.png)]     
+      div(class="hidden")
+        h2(class="")="Kontakt" 
+        p(class="")= telephone_numbers
+        p(class="")=emails
+
+      //- second part
+    section(class="max-w-[90%] mx-auto mt-10 lg:w-full lg:mt-[10vh]")
+      h1(class="hidden lg:block lg:text-5xl lg:font-bold ")= full_name
+      div(class="mt-7 lg:max-h-[30vh] lg:overflow-y-auto")
+        != bio
+      p(class="")= claim
+      ul(class="hidden lg:block lg:text-right")
+        li= "Lokace: "+location
+        li="Cena za hodinu: "+price_per_hour+" Kč"
+      div(class="hidden max-w-full text-left pb-5 pt-4 lg:block")
+        h2(class="text-3xl uppercase")="Kontakt"
+        p(class="")= telephone_numbers
+        p(class="")=emails
+
+      //- third part
+    section(class="max-w-[90%] mx-auto mt-14 sm:grid sm:grid-cols-2 sm:gap-2 lg:grid-cols-1 lg:gap-1 lg:flex lg:flex-col lg:m-0 lg:p-5")
+      div(class="h-24 sm:max-w-full sm:h-auto lg:max-w-full lg:max-h-[20%]")
         img(src="../../../img/TdA_ikony_pocitac_white.png",
             alt="ikonka počítače",
-            class="absolute w-20 -left-2 bottom-0 lg:w-24 lg:left-0 animate-pulse")
-        div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%] xl:mt-4")
-          p(class="lg:mb-5 xl:mb-0 xl:mt-12")= tag1
+            loading="lazy",
+            class="w-20 absolute sm:relative sm:float-left sm:w-1/3 sm:p-3 lg:p-5 ")
+        div(class="text-center max-w-[50%] mx-auto sm:mx-0 sm:float-left sm:w-2/3")
+          p(class="")= tag1
           p= tag2
 
-      div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
+      div(class ="h-24 sm:max-w-full sm:h-auto lg:max-h-[20%]") 
         img(src="../../../img/TdA_ikony_napad_blue.png",
+            loading="lazy",
             alt="ikonka nápadu",
-            class="absolute w-20 -right-2 bottom-0 lg:w-24 lg:-left-0 animate-pulse")
-        div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl left-0 lg:w-[70%]")
-          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag3
+            class="w-20 absolute right-4 sm:relative sm:float-left sm:w-1/3 sm:p-3 lg:p-5 lg:right-0")
+        div(class="text-center max-w-[50%] mx-auto sm:mx-0 sm:float-left sm:w-2/3")
+          p(class="")=tag3
           p=tag4
 
-      div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
+      div(class ="h-24 sm:max-w-full sm:h-auto lg:max-h-[20%]") 
         img(src="../../../img/TdA_ikony_studium_white.png",
+            loading="lazy",
             alt="ikonka studia",
-            class="absolute w-20 -left-2 bottom-0 lg:w-24 lg:left-0 animate-pulse")
-        div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%]")
-          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag5
+            class="w-20 absolute sm:relative sm:float-left sm:w-1/3 sm:p-3 lg:p-5")
+        div(class="text-center max-w-[50%] mx-auto sm:mx-0 sm:float-left sm:w-2/3")
+          p(class="")=tag5
           p=tag6
 
 
-      div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
+      div(class ="h-24 sm:max-w-full sm:h-auto lg:max-h-[20%]") 
         img(src="../../../img/TdA_ikony_konverzace_blue.png",
+            loading="lazy",
             alt="ikonka konverzace",
-            class="absolute w-20 -right-0 bottom-0 lg:w-24 lg:-left-0 animate-pulse")
-        div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%]")
-          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag7
+            class="w-20 absolute right-4 sm:relative sm:float-left sm:w-1/3 sm:p-3 lg:p-5 lg:right-0")
+        div(class="text-center max-w-[50%] mx-auto sm:mx-0 sm:float-left sm:w-2/3")
+          p(class="")=tag7
           p=tag9
 
-  
-      div(class ="w-full relative mt-14 lg:mt-16 lg:h-[15%]") 
+    
+      div(class ="h-24 sm:max-w-full sm:col-span-2 sm:justify-self-center sm:h-full lg:max-h-[20%]") 
         img(src="../../../img/TdA_ikony_nastaveni_white.png",
+            loading="lazy",
             alt="ikonka nastavení",
-            class="absolute w-20 -left-2 bottom-0 lg:w-24 lg:left-0 animate-pulse")
-        div(class="text-center text-base w-1/2 mx-auto mt-1 lg:ml-24 lg:text-xl lg:w-[70%]")
-          p(class="lg:mb-5 xl:mb-0 xl:mt-12")=tag8
+            class="w-20 absolute sm:relative sm:float-left sm:w-1/3 sm:p-3 lg:p-5")
+        div(class="text-center max-w-[50%] mx-auto sm:mx-0 sm:float-left sm:w-2/3")
+          p(class="")=tag8
           p=tag11
 
-      div(class="w-full mt-20 text-center lg:hidden")
-        h2(class="text-4xl uppercase text-white")="Kontakt"
-        p(class="mt-2")= telephone_numbers
-        p(class="mt-1")=emails
+    section(class="max-w-full text-center pb-5 pt-4 lg:hidden")
+      h2(class="text-3xl uppercase")="Kontakt"
+      p(class="")= telephone_numbers
+      p(class="")=emails
+  div(class="absolute inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-md hidden" id="formBg")
+  div(class="w-full min-h-[70vh] max-h-full absolute top-20 left-1/2 -translate-x-1/2 rounded-lg z-100 bg-[#02384D] sm:w-[80vw] lg:w-[65vw] lg:h-[80vh] lg:aspect-ratio-1 xl:w-[50vw] hidden" id="form")
+    button(onclick="hiddenForm()" class="absolute right-[4vw] top-[2vh] sm:right-[1vw] sm:top-[1vh] max-w-[10%]")
+      img(loading="lazy" src="../../../img/end.png", alt="" class="")   
+    form(action="", method="get" class=" w-full flex flex-col space-y-4 p-6 text-xl font-bold text-white")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Jméno 
+        input(type="text", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right" required)
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Přijímení 
+        input(type="text", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right " required)
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Datum 
+        input(type="datetime-local" step="3600" name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right" id="myDateTime" required)
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") E-mail
+        input(type="email", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right" required)
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tel. číslo
+        input(type="tel", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right" required)
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tagy
+        select(name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right" required)
+          option(value="ahoj")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]" ) Popisek
+        textarea(name="", cols="20", rows="10" class="w-full sm:w-3/5 h-[13vh] bg-[#74C7D3] rounded-lg float-right text-sm" required)
+      div(class="max-w-[70vw] mx-auto")
+        input(type="submit", value="Rezervovat" class="w-full h-[7vh] bg-[#74C7D3] rounded-lg px-5")
+      img(loading="lazy" src="../../../img/login.png", alt="" class="absolute w-32 right-[2.5vw] bottom-[3vh] hidden lg:block")      
