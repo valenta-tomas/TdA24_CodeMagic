@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  form(action="/login", method="post")
+    div
+        label(for="name") Jméno
+        input(type="text" id="name" name="name" required)
+    div
+        label(for="password") Heslo
+        input(type="password" id="password" name="password" required)
+    button(type="submit") Login  

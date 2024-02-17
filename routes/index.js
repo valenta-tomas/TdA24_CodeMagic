@@ -5,12 +5,14 @@ const { v4: uuidv4 } = require('uuid');
 const sqlite3 = require('sqlite3').verbose();
 const data= require('../public/data/lecturer.json');
 
+const bcrypt = require('bcrypt')
+
 const db = new sqlite3.Database("data/db.sqlite");
 // db.run("CREATE TABLE lecturers_tags ( lecturer_uuid UUID NOT NULL, tag TEXT NOT NULL, PRIMARY KEY (lecturer_uuid, tag));")
 // db.run("DROP TABLE lecturers_tags;")
 
 class Lecturer {
-  constructor(uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, telephone_numbers, emails, tags) {
+  constructor(uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, telephone_numbers, emails, tags, account) {
     this.uuid = uuid;
 
     this.title_before = title_before;
@@ -28,8 +30,11 @@ class Lecturer {
     this.emails = emails;
 
     this.tags = tags;
+
+    this.account = account;
   }
-  safe_data(){
+
+  save_data(){
     const insertSqlContact = `INSERT INTO contact (phone_number, email, contact_uuid) VALUES (?, ?, ?)`;
     const insertValuesContact = [this.telephone_numbers, this.emails, this.uuid];
     // console.log(insertValuesContact)
@@ -112,10 +117,34 @@ class Lecturer {
       
           // res.status(200).send();
         });
+        const AccountRegister = async()=>{
+          
+          try{
+            const salt = await bcrypt.genSalt()
+            const hasedPassword = await bcrypt.hash(this.account.password, salt)
+
+
+            const insertSqlUSers = `INSERT INTO users (name, password, lecturer_uuid) VALUES (?, ?, ?)`;
+            const Account = [this.account.userName,hasedPassword, this.uuid]
+            db.run(insertSqlUSers,Account,(err)=>{
+              if(err)
+                return;
+              else{
+                res.status(200)
+              }
+            }) 
+        }
+        catch{
+          return;
+        }
+        }
+
       })
     }
 
   }
+
+
 
   write_tags(){
       console.log(this.tags)
@@ -124,11 +153,11 @@ class Lecturer {
 
 
 
-
   db.run('CREATE TABLE IF NOT EXISTS contact ( phone_number TEXT NOT NULL, email TEXT NOT NULL, contact_uuid UUID NOT NULL, PRIMARY KEY (contact_uuid));')
   db.run('CREATE TABLE IF NOT EXISTS tags (tag_uuid UUID NOT NULL, tag CHAR(255) NOT NULL, PRIMARY KEY (tag_uuid));')
   db.run('CREATE TABLE IF NOT EXISTS lecturers (lecturer_uuid UUID NOT NULL, title_before VARCHAR(255), first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255) NOT NULL, title_after VARCHAR(255), picture_url VARCHAR(255), location VARCHAR(255), claim VARCHAR(255), bio TEXT, price_per_hour NUMERIC(10,2), contact_uuid UUID NOT NULL, PRIMARY KEY (lecturer_uuid), FOREIGN KEY (contact_uuid) REFERENCES contact (contact_uuid));');
   db.run('CREATE TABLE IF NOT EXISTS lecturer_tags ( lecturer_uuid UUID NOT NULL, tag_uuid UUID NOT NULL, FOREIGN KEY (lecturer_uuid) REFERENCES lecturers (lecturer_uuid), FOREIGN KEY (tag_uuid) REFERENCES tags (tag_uuid));')
+  db.run('CREATE TABLE IF NOT EXISTS users (id_user INTEGER PRIMARY KEY AUTOINCREMENT, jmeno TEXT NOT NULL, heslo TEXT NOT NULL, lecturer_uuid TEXT NOT NULL, FOREIGN KEY (lecturer_uuid) REFERENCES lecturers(lecturer_uuid), CHECK (id_user > 0));')
   router.post("/api/lecturers", (req,res)=>{
   try {
 
@@ -193,8 +222,8 @@ class Lecturer {
     // }
 
     // console.log(tags)
-    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags)
-    NewLecturer.safe_data()
+    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags, req.body.account)
+    NewLecturer.save_data()
     // console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     
     return res.status(200).json({
@@ -626,6 +655,22 @@ else{
 router.get('/login', (req, res)=>{
   res.render('login.pug')
 })
+router.post('/login', async(req, res)=>{
+  try{
+      const salt = await bcrypt.genSalt()
+      const hasedPassword = await bcrypt.hash(req.body.password, salt)
+      const user ={
+        name:req.body.name,
+        password: hasedPassword
+      }
+      console.log(user) 
+  }
+  catch{
+    res.redirect('/login')
+  }
+
+})
+
 router.get('/api',(req, res)=>{
   res.json({secret:"The cake is a lie"});
 })

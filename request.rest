@@ -1,0 +1,44 @@
+POST http://localhost:3000/api/lecturers
+Content-Type: application/json
+
+{
+  "title_before": "sdf.",
+  "first_name": "fff",
+  "middle_name": "ssssss",
+  "last_name": "Plachá",
+  "title_after": "s",
+  "picture_url": "https://picsum.photos/200",
+  "location": "Brno",
+  "claim": "Aktivní studentka / Předsedkyně spolku / Projektová manažerka",
+  "bio": "<p>Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí, spolupráce na soutěžích Prezentiáda, pIšQworky, <b>Tour de App</b> a Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad všechno od marketingu po logistiku a moc ráda to předám dál. Momentálně studuji Pdf MUNI a FF MUNI v Brně.",
+  "tags": [
+    {
+      "name": "Marketing"
+    },
+        {
+      "name": "Prodej"
+    },
+        {
+      "name": "Další"
+    },
+        {
+      "name": "Ekonomika"
+    },
+        {
+      "name": "Peníze"
+    }
+  ],
+  "price_per_hour": 720,
+  "contact": {
+    "telephone_numbers": [
+      "+123 777 338 111"
+    ],
+    "emails": [
+      "user@example.com"
+    ]
+  },
+  "account"{
+    "userName":"TEstUserName",
+    "password":"heslo123"
+  }
+}
