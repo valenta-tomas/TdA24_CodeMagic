@@ -214,6 +214,10 @@ class Lecturer {
         ,
         "emails": 
           NewLecturer.emails             
+      },
+      "account":{
+        "userName":NewLecturer.account.userName,
+        "password":NewLecturer.account.password
       }
     });
   }
@@ -476,6 +480,23 @@ router.put('/lecturers/:uuid', (req, res) => {
   const uuidParam = req.params.uuid;
   const updateData = req.body;
 
+  const UpdateUser = 'UPDATE users SET name = ?, password = ? WHERE lecturer_uuid = ?';
+  const UpdateUserData= async()=>{
+    const Salt = await bcrypt.genSalt()
+    const Password = await bcrypt.hash(updateData.account.password, Salt)
+    db.all(UpdateUser, [updateData.account.userName, Password, uuidParam],(err)=>{
+      if(err){
+        res.status(404).send('User not found');
+        return
+      }
+      else
+      return
+    })
+  }
+  UpdateUserData()
+
+
+
   const deleteQuery = 'DELETE FROM lecturer_tags WHERE lecturer_uuid = ?';
   const insertSql = `INSERT INTO lecturer_tags (lecturer_uuid, tag_uuid) VALUES (?, ?)`;
   const insertSqlTag = `INSERT INTO tags (tag_uuid, tag) VALUES (?, ?)`;
@@ -584,6 +605,10 @@ router.put('/lecturers/:uuid', (req, res) => {
               contact:{
                 telephone_numbers:updateData.contact.telephone_numbers,
                 emails:updateData.contact.emails
+              },
+              account:{
+                userName:updateData.account.userName,
+                password:updateData.account.password
               }
             }          
             console.log(Lecturer.uuid)

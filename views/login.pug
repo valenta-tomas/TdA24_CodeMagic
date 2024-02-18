@@ -4,11 +4,17 @@ extends layout
 block content
   if messages.error
     div= messages.error
-  form(action="/login", method="POST")
-    div
-      label(for="name") Jméno
-      input(type="text" id="name" name="name" required)
-    div
-      label(for="password") Heslo
-      input(type="password" id="password" name="password" required)
-    button(type="submit") Login  
+  a(href="/") 
+    img(loading="lazy" src="../../../img/logo.png", alt="logo", class="w-40 sm:w-56 absolute top-10 left-8 z-10")
+  div(class="h-screen relative w-screen lg:w-[70vw] lg:mx-auto lg:h-[90vh] lg:mt-[5vh] xl:w-[45vw]")
+    div(class="h-full bg-black opacity-40 lg:rounded-2xl") 
+    img(loading="lazy" src="../../../img/ikona_login.png", alt="logo", class="max-w-full absolute top-[15vh] left-0 z-10 sm:w-[70vw] sm:left-1/2 sm:transform sm:-translate-x-1/2 lg:w-[80%] lg:top-0")
+    form(action="/login", method="POST" class="w-[80vw] absolute z-30 text-white top-[56vh] left-1/2 -translate-x-1/2 text-xl lg:w-[85%] lg:top-[50%] lg:text-2xl xl:top-[47%]")
+      div
+        label(for="name" class="block pb-3") Přihlašovací jméno
+        input(type="text" id="name" name="name" class="w-full h-10 rounded-xl text-black lg:h-14 xl:h-20 xl:text-3xl focus:outline-none focus:ring focus:ring-[#74C7D3]" required)
+      div(class="mt-4")
+        label(for="password" class="block pb-3") Heslo
+        input(type="password" id="password" name="password" class="w-full h-10 rounded-xl text-black lg:h-14 xl:h-20 xl:text-3xl focus:outline-none focus:ring focus:ring-[#74C7D3]" required)
+      button(type="submit" class="block mx-auto py-5 bg-[#74C7D3] font-bold px-16 rounded-xl mt-[15%] sm:mt-[10%] lg:mt-[5%] focus:outline-none focus:ring focus:ring-[#fff]") Přihlásit 
+    
