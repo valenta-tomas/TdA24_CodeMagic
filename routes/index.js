@@ -28,6 +28,7 @@ const users=[]
 db.all("SELECT * FROM users", (err, rows) => {
   if (err) {
       console.error(err.message);
+      return;
   }
   // Vypsání získaných dat do konzole
 
