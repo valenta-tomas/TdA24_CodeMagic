@@ -23,12 +23,7 @@ db.run('CREATE TABLE IF NOT EXISTS users (id_user INTEGER PRIMARY KEY AUTOINCREM
 
 
 
-const users=[  {
-  id_user: 0,
-  name: 'test',
-  password: '$2b$10$j97SPFsWcbTRZrgTb/nQ3em4WDLMpufNW8j1DngPqX6L3klIfO5IO',
-  lecturer_uuid: '62b0afc4-8bf1-4ee5-b2f5-7efc3d02bc7e'
-}]
+const users=[]
 
 db.all("SELECT * FROM users", (err, rows) => {
   if (err) {
