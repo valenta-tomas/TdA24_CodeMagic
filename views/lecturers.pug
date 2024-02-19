@@ -5,51 +5,84 @@ block content
 
     //-first part
     div(class="w-full lg:w-1/4")
-      div(class="fixed lg:w-1/4")
-        img(src="../../img/logo.png", alt="logo", class="w-1/4 mb-10 lg:w-5/12 lg:ml-12 lg:mt-10 sm:float-left")
+      img(src="../../img/logo.png", alt="logo", class="w-1/4 mb-10 lg:w-5/12 lg:ml-12 lg:mt-10 sm:float-left")
+      div(class="hidden lg:block lg:fixed lg:w-1/4 ml-[2vw]")
+        div(class="w-full absolute top-[20vh]") 
+          img(src="../../../img/TdA_ikony_pocitac_white.png", alt="ikonka počítače", class="w-1/3 p-[5%] animate-pulse")
 
-        div(class="w-1/2 relative lg:h-[15%] lg:ml-20 my-10 lg:block hidden") 
-          img(src="../../../img/TdA_ikony_pocitac_white.png", alt="ikonka počítače", class="relative w-1/3 lg:w-24 animate-pulse")
+        div(class="w-full absolute top-[35vh]") 
+          img(src="../../../img/TdA_ikony_napad_blue.png", alt="ikonka nápadu", class="w-1/3 p-[5%] animate-pulse")
 
-        div(class="w-1/2 relative lg:h-[15%] lg:ml-20 my-10 lg:block hidden") 
-          img(src="../../../img/TdA_ikony_napad_blue.png", alt="ikonka nápadu", class="relative w-1/3 lg:w-24  animate-pulse")
+        div(class="w-full absolute top-[50vh]") 
+          img(src="../../../img/TdA_ikony_studium_white.png", alt="ikonka studia", class="w-1/3 p-[5%] animate-pulse")
 
-        div(class="w-1/2 relative lg:h-[15%] lg:ml-20 my-10 lg:block hidden") 
-          img(src="../../../img/TdA_ikony_studium_white.png", alt="ikonka studia", class="relative w-1/3 lg:w-24  animate-pulse")
+        div(class="w-full absolute top-[65vh]") 
+          img(src="../../../img/TdA_ikony_konverzace_blue.png", alt="ikonka konverzace", class="w-1/3 p-[5%] animate-pulse")
 
-        div(class="w-1/2 relative lg:h-[15%] lg:ml-20 my-10 lg:block hidden") 
-          img(src="../../../img/TdA_ikony_konverzace_blue.png", alt="ikonka konverzace", class="relative w-1/3 lg:w-24  animate-pulse")
-
-        div(class="w-1/2 relative lg:h-[15%] lg:ml-20 my-10 lg:block hidden") 
-          img(src="../../../img/TdA_ikony_nastaveni_white.png", alt="ikonka nastavení", class="relative w-1/3 lg:w-24  animate-pulse")
+        div(class="w-full absolute top-[80vh]") 
+          img(src="../../../img/TdA_ikony_nastaveni_white.png", alt="ikonka nastavení", class="w-1/3 p-[5%] animate-pulse")
 
     div(class="w-full lg:w-3/4 flex flex-col mt-20 lg:ml-20")
-      each n in lector
-        a(href="/lecturers/"+n.uuid class="w-2/3 mx-auto  my-11") 
-          img(src=n.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4")
-          div(class="lg:float-left w-full lg:w-2/3 text-xl px-5")
-            p= n.claim
-            p= "Cena za hodinu: "+n.price_per_hour
-            p= "Lokace: "+n.location
-            p= n.tags[0].name
-            if(n.tags[1] && n.tags[1].name)
-              p= n.tags[1].name
-            else
-              p= "..."
-
+      //- each n in lector
+      //-   a(href="/lecturers/"+n.uuid class="w-2/3 mx-auto  my-11") 
+      //-     img(src=n.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4")
+      //-     div(class="lg:float-left w-full lg:w-2/3 text-xl px-5")
+      //-       p= n.claim
+      //-       p= "Cena za hodinu: "+n.price_per_hour
+      //-       p= "Lokace: "+n.location
+      //-       p= n.tags[0].name
+      //-       if(n.tags[1] && n.tags[1].name)
+      //-         p= n.tags[1].name
+      //-       else
+      //-         p= "..."
+      //- form get
       //-third part
     div(class="lg:w-1/4 block  w-full")
-      form(action="/", method="get" class="flex flex-col text-white w-full lg:fixed lg:w-1/4 right-11 top-32")
-        label(for="minPrice" class="text-xl my-3") Minimální cena:
-        input(type="number", id="minPrice", name="minPrice", placeholder="Minimální cena" class="h-9 text-black")
+      //-price range
+      form(action="/", method="GET" class="lg:text-lg xl:text-xl")
+        .wrapper
+          .slider
+            .progress
+          .range-input
+            input.range-min(id="rangeMin" type="range", min="0", max="10000", value="2500", step="100" onchange="onchangevalues1()")
+            input.range-max(id="rangeMax" type="range", min="0", max="10000", value="7500", step="100" onchange="onchangevalues1()")
+          .price-input
+            .field
+              span 
+              input.input-min(id="inputMin" name="inputMin" type="number", value="2500" onchange="onchangevalues2()")
+            .separator až
+            .field
+              input.input-max(id="inputMax" name="inputMax" type="number", value="7500" onchange="onchangevalues2()")
+              span(class="pl-0.5") Kč
 
-        label(for="maxPrice" class="text-xl my-3") Maximální cena:
-        input(type="number", id="maxPrice", name="maxPrice", placeholder="Maximální cena" class="h-9 text-black")
+          //- checkbox
+        div(class="container max-h-[50vh] overflow-y-auto")
+          h3.title Choose the countries you love
+          each n in tagArray
+            .box
+              input.checkbox(type="checkbox", id=""+n, value=""+n)
+              label(for=""+n)= n
+          .print
+          p.text You Have Selected: 
+          output(class="value" id="tags" name="tags")
 
-        label(for="city" class="text-xl my-3") V kterém městě:
-        input(type="text", name="city", id="city" class="h-9 text-black")
-        label(for="tags" class="text-xl my-3") Vybrané tagy:
-        select(name="tags", id="tags", multiple class="text-black h-32 text-lg")
-          each tag in tagArray
-            option(value=tag) #{tag} 
-        button(type="submit" class="text-xl my-3") Filtrovat
+        div(class="")
+          label(for="city") Město 
+          input(type="text", name="city" id="city")
+        button(type="submit") Odeslat
+        
+        //- .box
+        //-   input.checkbox(type="checkbox", id="japan", value="Japan")
+        //-   label(for="japan") Japan
+        //- .box
+        //-   input.checkbox(type="checkbox", id="italy", value="Italy")
+        //-   label(for="italy") Italy
+        //- .box
+        //-   input.checkbox(type="checkbox", id="canada", value="Canada")
+        //-   label(for="canada") Canada
+        //- .box
+        //-   input.checkbox(type="checkbox", id="iceland", value="Iceland")
+        //-   label(for="iceland") Iceland
+        //- .print
+        //-   p.text You Have Selected: 
+        //-     span.value

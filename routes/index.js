@@ -16,7 +16,7 @@ db.all("SELECT * FROM users", (err, rows) => {
   // Vypsání získaných dat do konzole
 
   users.push(...rows)
-  console.log(users)
+  //console.log(users)
   const initializePassport = require('../passport-config')
   initializePassport(passport,
   name => users.find(user => user.name === name),
@@ -230,100 +230,23 @@ class Lecturer {
   
 })
 router.get('/', (req, res) => {
-  const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid JOIN lecturer_tags ON lecturers.lecturer_uuid = lecturer_tags.lecturer_uuid JOIN tags ON lecturer_tags.tag_uuid = tags.tag_uuid`;
-  let LecturerFull=[];
-  db.all(getLecturers, (err, rows) => {
-    if (err) {
-      res.status(500).send('An error occurred while getting all lecturer-tags: ' + err);
-      return;
-    }
-    let unikatniData = rows.reduce((acc, objekt) => {
-      // Zjistíme, zda už máme objekt s daným uuid v akumulátoru
-      let existujiciObjekt = acc.find(item => item.lecturer_uuid === objekt.lecturer_uuid);
-    
-      // Pokud nemáme, přidáme objekt do akumulátoru
-      if (!existujiciObjekt) {
-        acc.push(objekt);
-      }
-    
-      return acc;
-    }, []);
-    let filtrovanaPole;
-    for(let i=0;i<unikatniData.length; i++){
-      let lecturerUUID = unikatniData[i].lecturer_uuid
-      // console.log(lecturerUUID)
+  console.log(req.body.city)
+  const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid`;
+  const getTags = `SELECT * FROM tags`;
+  const Tags=[]
+    db.all(getTags,(err,Tagrows)=>{
+      if(err)
+        return
 
-        filtrovanaPole = rows.filter(function(value) {
-          if (value.lecturer_uuid === lecturerUUID) {
-            return true;
-          } else {
-            return false;
-          }
-        }).map(function(value) {
-          return {uuid: value.tag_uuid, name: value.tag };
-          // return { lecturer_uuid:value.lecturer_uuid, uuid: value.tag_uuid, name: value.tag };
-        });
-        // console.log(filtrovanaPole)
-        let telNumbers = unikatniData[i].phone_number.split(",")
-        let Emils = unikatniData[i].email.split(",")
-
-
-
-      LecturerFull.push(
-        {
-          uuid:unikatniData[i].lecturer_uuid,
-          title_before:unikatniData[i].title_before,
-          first_name:unikatniData[i].first_name,
-          middle_name:unikatniData[i].middle_name,
-          last_name:unikatniData[i].last_name,
-          title_after:unikatniData[i].title_after,
-          picture_url:unikatniData[i].picture_url,
-          location:unikatniData[i].location,
-          claim:unikatniData[i].claim,
-          bio:unikatniData[i].bio,
-          tags:filtrovanaPole,
-          price_per_hour:unikatniData[i].price_per_hour,
-          contact:{
-            telephone_numbers:telNumbers,
-            emails:Emils
-          }
-        }
-      )
-    }
-    const minPrice = parseInt(req.query.minPrice) || 0;
-    const maxPrice = parseInt(req.query.maxPrice) || Infinity;
-
-
-    const TAGS = req.query.tags || "";
-
-    const filterUniqueByTag = (value, index, self) => {
-      return self.findIndex(obj => obj.tag === value.tag) === index;
-    };
-    let arrayTAgs = []
-    const dataWithoutDuplicates = rows.filter(filterUniqueByTag);
-
-    dataWithoutDuplicates.map(item=>{
-      arrayTAgs.push(item.tag)
-    })
-    console.log(TAGS)
-    const city = req.query.city || "";
-    const filtrovaneProdukty = LecturerFull.filter(produkt => {
-      if(city !=="" ||minPrice !==0 || maxPrice !== Infinity){
-      const cenaSplnujePodminky = produkt.price_per_hour >= minPrice && produkt.price_per_hour <= maxPrice;
+    db.all(getLecturers,(err, rows)=>{
+      if(err)
+        return
       
-        const mestoSplnujePodminky = city.toLowerCase() === produkt.location.toLowerCase();
-    
-        // Pokud cena a město splňují obě podmínky, zahrnout produkt ve výsledku
-        return cenaSplnujePodminky && mestoSplnujePodminky;
-      }
-      else{
-        return produkt
-      }
-
-  });
-    res.render('lecturers', { lector: filtrovaneProdukty, tagArray:arrayTAgs});
-    // res.status(200).send(LecturerFull)
-  });
+      Tagrows.forEach(value => Tags.push(value.tag))
+      res.render('lecturers', { lector: rows, tagArray:Tags});
+      // res.status(200).send(LecturerFull)
+    })
+  })
 });
 
 router.delete('/lecturers/:uuid', (req, res)=>{
