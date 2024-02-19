@@ -20,27 +20,27 @@ db.run('CREATE TABLE IF NOT EXISTS users (id_user INTEGER PRIMARY KEY AUTOINCREM
  
 
 
+function GetUser(){
+  const users=[]
 
+  db.all("SELECT * FROM users", (err, rows) => {
+    if (err) {
+        console.error(err.message);
+        return;
+    }
+    // Vypsání získaných dat do konzole
+    else{
+      users.push(...rows)
+      //console.log(users)
+      const initializePassport = require('../passport-config')
+      initializePassport(passport,
+      name => users.find(user => user.name === name),
+      id => users.find(user => user.lecturer_uuid === id)
+      )
+    }
+  });
 
-const users=[]
-
-db.all("SELECT * FROM users", (err, rows) => {
-  if (err) {
-      console.error(err.message);
-      return;
-  }
-  // Vypsání získaných dat do konzole
-  else{
-    users.push(...rows)
-    //console.log(users)
-    const initializePassport = require('../passport-config')
-    initializePassport(passport,
-    name => users.find(user => user.name === name),
-    id => users.find(user => user.lecturer_uuid === id)
-    )
-  }
-});
-
+}
 
 
 
@@ -185,6 +185,7 @@ class Lecturer {
 
 
   router.post("/api/lecturers", (req,res)=>{
+
   try {
 
     const uuid= uuidv4()
@@ -206,7 +207,6 @@ class Lecturer {
     NewLecturer.save_data()
     NewLecturer.AccountRegister()
     // console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
-    
     return res.status(200).json({
       "uuid": NewLecturer.uuid,
       "title_before": NewLecturer.title_before,
@@ -406,6 +406,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
   })
 })
 router.put('/lecturers/:uuid', (req, res) => {
+
   const LecturerDataUpdate = 'UPDATE lecturers SET first_name = ?, last_name = ?, middle_name = ?, title_after = ?, picture_url = ?, location = ?, claim = ?, bio = ?, price_per_hour = ?,title_before=? WHERE lecturer_uuid = ?';
   
   const getSql = `SELECT * FROM tags WHERE tag = ?`;
@@ -429,7 +430,6 @@ router.put('/lecturers/:uuid', (req, res) => {
     })
   }
   UpdateUserData()
-
 
 
   const deleteQuery = 'DELETE FROM lecturer_tags WHERE lecturer_uuid = ?';
@@ -585,6 +585,7 @@ router.get('/user',checkAuthenticated, (req, res)=>{
   res.render('user.pug')
 })
 router.get('/login',checkNotAuthenticated, (req, res)=>{
+  GetUser()
   res.render('login.pug')
 })
 router.post('/login',checkNotAuthenticated, passport.authenticate('local',{
