@@ -31,14 +31,15 @@ db.all("SELECT * FROM users", (err, rows) => {
       return;
   }
   // Vypsání získaných dat do konzole
-
-  users.push(...rows)
-  //console.log(users)
-  const initializePassport = require('../passport-config')
-  initializePassport(passport,
-  name => users.find(user => user.name === name),
-  id => users.find(user => user.lecturer_uuid === id)
-  )
+  else{
+    users.push(...rows)
+    //console.log(users)
+    const initializePassport = require('../passport-config')
+    initializePassport(passport,
+    name => users.find(user => user.name === name),
+    id => users.find(user => user.lecturer_uuid === id)
+    )
+  }
 });
 
 
