@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
   main(class="max-w-full box-border text-white m-0 p-0 sm:text-lg lg:grid lg:grid-cols-3 lg:gap-x-0 max-h-screen lg:overflow-hidden") 
     //- first part
     section(class="max-w-[90%] mx-auto lg:w-full")
@@ -97,7 +96,7 @@ block content
   div(class="w-full min-h-[70vh] max-h-full absolute top-20 left-1/2 -translate-x-1/2 rounded-lg z-100 bg-[#02384D] sm:w-[80vw] lg:w-[65vw] lg:h-[80vh] lg:aspect-ratio-1 xl:w-[50vw] hidden" id="form")
     button(onclick="hiddenForm()" class="absolute right-[4vw] top-[2vh] sm:right-[1vw] sm:top-[1vh] max-w-[10%]")
       img(loading="lazy" src="../../../img/end.png", alt="" class="")   
-    form(action="", method="get" class=" w-full flex flex-col space-y-4 p-6 text-xl font-bold text-white")
+    form(action="", method="get" class="w-full flex flex-col space-y-4 p-6 text-xl font-bold text-white")
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Jméno 
         input(type="text", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
@@ -106,7 +105,12 @@ block content
         input(type="text", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff] " required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Datum 
-        input(type="datetime-local" step="3600" name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" id="myDateTime" required)
+        input(type="date" name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" id="myDate" required)
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="online") Online
+        input(type="radio" id="online" name="meeting") 
+        abel(for="personally") Osobně
+        input(type="radio" id="personally" name="meeting") 
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") E-mail
         input(type="email", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
@@ -115,11 +119,11 @@ block content
         input(type="tel", name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tagy
-        select(name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
+        select(name="" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]")
           option(value="ahoj")
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]" ) Popisek
-        textarea(name="", cols="20", rows="10" class="w-full sm:w-3/5 h-[13vh] bg-[#74C7D3] rounded-lg float-right text-sm focus:outline-none focus:ring focus:ring-[#fff]" required)
+        textarea(name="", cols="20", rows="10" class="w-full sm:w-3/5 h-[13vh] bg-[#74C7D3] rounded-lg float-right text-sm focus:outline-none focus:ring focus:ring-[#fff]" )
       div(class="max-w-[70vw] mx-auto")
         button(type="submit" class="w-full h-[7vh] bg-[#74C7D3] rounded-lg px-5 focus:outline-none focus:ring focus:ring-[#fff]") Rezervovat
       img(loading="lazy" src="../../../img/login.png", alt="" class="absolute w-32 right-[2.5vw] bottom-[3vh] hidden lg:block")      
