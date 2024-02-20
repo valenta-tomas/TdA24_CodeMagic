@@ -48,7 +48,7 @@ function GetUser(){
 // db.run("DROP TABLE lecturers_tags;")
 
 class Lecturer {
-  constructor(uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, telephone_numbers, emails, tags, account) {
+  constructor(uuid, title_before, first_name, middle_name, last_name, title_after, picture_url, location, claim, bio, price_per_hour, telephone_numbers, emails, tags, username, password) {
     this.uuid = uuid;
 
     this.title_before = title_before;
@@ -67,17 +67,18 @@ class Lecturer {
 
     this.tags = tags;
 
-    this.account = account;
+    this.username = username;
+    this.password = password;
   }
   AccountRegister = async()=>{
           
     try{
       const salt = await bcrypt.genSalt()
-      const hasedPassword = await bcrypt.hash(this.account.password, salt)
+      const hasedPassword = await bcrypt.hash(this.password, salt)
 
 
       const insertSqlUSers = `INSERT INTO users (name, password, lecturer_uuid) VALUES (?, ?, ?)`;
-      const Account = [this.account.userName,hasedPassword, this.uuid]
+      const Account = [this.username,hasedPassword, this.uuid]
       db.run(insertSqlUSers,Account,(err)=>{
         if(err)
           return;
@@ -203,12 +204,14 @@ class Lecturer {
       return;
     }
     else{
-    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags, req.body.account)
+    const NewLecturer = new Lecturer(uuid, req.body.title_before, req.body.first_name, req.body.middle_name, req.body.last_name, req.body.title_after, req.body.picture_url, req.body.location, req.body.claim, req.body.bio, req.body.price_per_hour, req.body.contact.telephone_numbers, req.body.contact.emails, tags, req.body.username, req.body.password)
     NewLecturer.save_data()
     NewLecturer.AccountRegister()
     // console.log(NewLecturer.title_before +"\n"+NewLecturer.first_name+"\n"+NewLecturer.middle_name+"\n"+NewLecturer.last_name+"\n"+NewLecturer.title_after+"\n"+NewLecturer.picture_url+"\n"+NewLecturer.location+"\n"+NewLecturer.claim+"\n"+NewLecturer.bio+"\n"+NewLecturer.telephone_numbers+"\n"+NewLecturer.emails+"\n"+NewLecturer.price_per_hour)
     return res.status(200).json({
       "uuid": NewLecturer.uuid,
+      "username":NewLecturer.username,
+      "password":NewLecturer.password,
       "title_before": NewLecturer.title_before,
       "first_name": NewLecturer.first_name,
       "middle_name": NewLecturer.middle_name,
@@ -226,10 +229,6 @@ class Lecturer {
         ,
         "emails": 
           NewLecturer.emails             
-      },
-      "account":{
-        "userName":NewLecturer.account.userName,
-        "password":NewLecturer.account.password
       }
     });
   }
@@ -419,8 +418,8 @@ router.put('/lecturers/:uuid', (req, res) => {
   const UpdateUser = 'UPDATE users SET name = ?, password = ? WHERE lecturer_uuid = ?';
   const UpdateUserData= async()=>{
     const Salt = await bcrypt.genSalt()
-    const Password = await bcrypt.hash(updateData.account.password, Salt)
-    db.all(UpdateUser, [updateData.account.userName, Password, uuidParam],(err)=>{
+    const Password = await bcrypt.hash(updateData.password, Salt)
+    db.all(UpdateUser, [updateData.username, Password, uuidParam],(err)=>{
       if(err){
         res.status(404).send('User not found');
         return
@@ -526,6 +525,8 @@ router.put('/lecturers/:uuid', (req, res) => {
             console.log(tagsArray)
             let Lecturer = {
               uuid:uuidParam,
+              username:updateData.username,
+              password:updateData.password,
               title_before:updateData.title_before,
               first_name:updateData.first_name,
               middle_name:updateData.middle_name,
@@ -540,10 +541,6 @@ router.put('/lecturers/:uuid', (req, res) => {
               contact:{
                 telephone_numbers:updateData.contact.telephone_numbers,
                 emails:updateData.contact.emails
-              },
-              account:{
-                userName:updateData.account.userName,
-                password:updateData.account.password
               }
             }          
             console.log(Lecturer.uuid)
