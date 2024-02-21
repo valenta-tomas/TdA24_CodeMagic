@@ -445,11 +445,11 @@ router.get('/lecturers/:uuid', (req, res)=>{
               }
             }
           )
+          console.log(filterTags)
           function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
           }
             const l = LecturerFull[0].tags.length-1
-          
           res.render('lecturer', { 
             title_before: LecturerFull[0].title_before,
             title:"lecturer"
@@ -470,6 +470,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
             ,tag7 : LecturerFull[0].tags[getRandomInt(0, l)].name
             ,tag8 : LecturerFull[0].tags[getRandomInt(0, l)].name
             ,time: time
+            ,tags:filterTags
            });
           // res.status(200).send(LecturerFull[0])
         })

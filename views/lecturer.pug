@@ -159,8 +159,9 @@ block content
         input(type="tel", name="phone" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tagy
-        select(name="tag" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]")
-          option(value="ahoj")
+        select(name="tag" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff] text-white")
+          each tag in tags
+            option(value=""+tag.name class="text-white")= tag.name
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]" ) Popisek
         textarea(name="description", cols="20", rows="10" class="w-full sm:w-3/5 h-[13vh] bg-[#74C7D3] rounded-lg float-right text-sm focus:outline-none focus:ring focus:ring-[#fff]" )
