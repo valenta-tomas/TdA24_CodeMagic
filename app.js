@@ -41,6 +41,46 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middleware pro zpracování základní autentizace
+app.use((req, res, next) => {
+  // Vynechání autentizace pro GET metodu
+  if (req.method === 'GET') {
+      next();
+      return;
+  }
+
+  // Vynechání autentizace pro cestu /login
+  if (req.path === '/login') {
+      next();
+      return;
+  }
+  if (req.query._method === 'DELETE') {
+    return next(); // Povolit DELETE s query parametrem _method=DELETE
+  }
+  if (req.method === 'POST' && req.path.match(/^\/lecturers\/[^/]+$/)) {
+    return next(); // Přeskočení autentizace
+}
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Basic ')) {
+      res.status(401).send('Chybějící nebo neplatné autentizační údaje.');
+      return;
+  }
+
+  // Dekódování a ověření autentizačních údajů
+  const base64Credentials = authHeader.split(' ')[1];
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+  const [username, password] = credentials.split(':');
+
+  // Zde byste prováděli ověření uživatelských údajů, například dotazem do databáze
+  if (username === 'TdA' && password === 'd8Ef6!dGG_pv') {
+      next();
+  } else {
+      res.status(401).send('Neplatné uživatelské jméno nebo heslo.');
+  }
+});
+
+
 app.use(flash())
 app.use(session({
   secret: process.env.SESSION_SECRET,

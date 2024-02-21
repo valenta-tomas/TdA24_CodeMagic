@@ -258,52 +258,58 @@ router.get('/', (req, res) => {
   })
 });
 
-router.delete('/lecturers/:uuid', (req, res)=>{
-  const getLecturers = "SELECT * FROM lecturers";
-  db.all(getLecturers, (err, rows) => {
-  if(rows.length>0){
-  const uuidParam = req.params;
-  console.log(rows)
-  const item = rows.find(item => item.lecturer_uuid === uuidParam.uuid);
-  if (item) {
-    const query1 = "DELETE FROM lecturers WHERE lecturer_uuid = ?";
-    const query2 = "DELETE FROM contact WHERE contact_uuid = ?";
-    const query3 = "DELETE FROM lecturer_tags WHERE lecturer_uuid = ?";
-    db.run(query1, uuidParam.uuid, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-  
-      db.run(query2, uuidParam.uuid, (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-  
-        db.run(query3, uuidParam.uuid, (err,rows) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
+router.delete('/lecturers/:uuid', (req, res, next) => {
+  const uuid = req.params.uuid;
+  let successCount = 0; // Proměnná pro sledování úspěšných operací smazání
 
-        });
-      });
-    });
-    res.status(204).send({
-      "code": 204
-    });
-    console.log("Záznamy byly úspěšně odstraněny.");
+  // Funkce pro odeslání odpovědi, pokud všechny operace smazání proběhnou úspěšně
+  function sendSuccessResponse() {
+    if (successCount === 4) { // Počet operací smazání
+      res.status(204).json({ message: "Záznam byl úspěšně smazán" });
+    }
   }
-  else{
-    res.status(404).send({
-      "code": 404,
-      "message": "User not found"
-    });
-  }
-  }})
-  
-})
+
+  // Smazání záznamu z tabulky users
+  db.run(`DELETE FROM users WHERE lecturer_uuid = ?`, [uuid], function(err) {
+    if (err) {
+      res.status(400);
+      return next(err);
+    }
+    successCount++;
+    sendSuccessResponse();
+  });
+
+  // Smazání záznamu z tabulky lecturers
+  db.run(`DELETE FROM lecturers WHERE lecturer_uuid = ?`, [uuid], function(err) {
+    if (err) {
+      res.status(400);
+      return next(err);
+    }
+    successCount++;
+    sendSuccessResponse();
+  });
+
+  // Smazání záznamu z tabulky lecturer_tags
+  db.run(`DELETE FROM lecturer_tags WHERE lecturer_uuid = ?`, [uuid], function(err) {
+    if (err) {
+      res.status(400);
+      return next(err);
+    }
+    successCount++;
+    sendSuccessResponse();
+  });
+
+  // Smazání záznamu z tabulky contact
+  db.run(`DELETE FROM contact WHERE contact_uuid = ?`, [uuid], function(err) {
+    if (err) {
+      res.status(400);
+      return next(err);
+    }
+    successCount++;
+    sendSuccessResponse();
+  });
+});
+
 router.post('/lecturers/:uuid', (req, res)=>{
   const uuidParam = req.params;
   console.log(req.body.first_name)
@@ -341,13 +347,14 @@ router.post('/lecturers/:uuid', (req, res)=>{
 })
 router.get('/lecturers/:uuid', (req, res)=>{
   const uuidParam = req.params;
-  let sql = "SELECT * FROM reservation";
-  db.all(sql,(err, rows) => {
+  let sql = "SELECT * FROM reservation WHERE lecturer_uuid = ?";
+  db.all(sql,[uuidParam],(err, rows) => {
     if (err) {
       return console.error(err.message);
     }
     // Zpracování získaných záznamů
     rows.forEach((row) => {
+      console.log(row)
       row.hours = row.hours.split(",")
     });
 
