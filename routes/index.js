@@ -15,9 +15,7 @@ db.run('CREATE TABLE IF NOT EXISTS lecturer_tags ( lecturer_uuid UUID NOT NULL, 
 db.run('CREATE TABLE IF NOT EXISTS users (id_user INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, password TEXT NOT NULL, lecturer_uuid TEXT NOT NULL, FOREIGN KEY (lecturer_uuid) REFERENCES lecturers(lecturer_uuid), CHECK (id_user > 0));')
 
 
-
-
- 
+db.run('CREATE TABLE IF NOT EXISTS reservation (reservation_uuid UUID PRIMARY KEY NOT NULL, lecturer_uuid UUID NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, date DATE NOT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(20) NOT NULL, tag VARCHAR(255), description TEXT, hours VARCHAR(50), meeting VARCHAR(50) NOT NULL);')
 
 
 function GetUser(){
@@ -306,10 +304,98 @@ router.delete('/lecturers/:uuid', (req, res)=>{
   }})
   
 })
+router.post('/lecturers/:uuid', (req, res)=>{
+  const uuidParam = req.params;
+  console.log(req.body.first_name)
+  console.log(req.body.first_name)
+  console.log(req.body.last_name)
+  console.log(req.body.date)
+  console.log(req.body.meeting)
+  console.log(req.body.email)
+  console.log(req.body.phone)
+  console.log(req.body.tag)
+  console.log(req.body.description)
+  console.log(req.body.hours)
+  console.log(uuidParam.uuid)
+  function reservation(){
+    const uuid= uuidv4()
+    const inserReservation = `INSERT INTO reservation (reservation_uuid , lecturer_uuid, first_name, last_name, date, email, phone, tag, description, hours, meeting) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const first_name =  req.body.first_name
+    const last_name =  req.body.last_name
+    const date=  req.body.date
+    const meeting=  req.body.meeting
+    const email=  req.body.email
+    const phone=  req.body.phone
+    const tag=  req.body.tag
+    const description=  req.body.description
+    const hours=  req.body.hours.toString()
 
+    db.run(inserReservation,[uuid, uuidParam.uuid, first_name, last_name, date, email, phone, tag, description, hours, meeting],(err)=>{
+      if(err){
+        return console.error(err.message);
+      }
+    })
+  }
+  reservation()
+  res.redirect('/');
+})
 router.get('/lecturers/:uuid', (req, res)=>{
   const uuidParam = req.params;
+  let sql = "SELECT * FROM reservation";
+  db.all(sql,(err, rows) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    // Zpracování získaných záznamů
+    rows.forEach((row) => {
+      row.hours = row.hours.split(",")
+    });
+
+
+
+
+
+
   let LecturerFull=[];
+  let time =[]
+  const test =[{
+    date: '2024-02-20',
+    hours:[9,16]
+  },   { date: '2024-02-21',
+  hours:[8,16]
+}
+]
+  let hours = [8,9,10,11,12,13,14,15,16,17,18,19]
+  for(let i= 0; i<=21; i++){
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Přidání nuly pro jednociferný měsíc
+    const day = date.getDate().toString().padStart(2, '0'); // Přidání nuly pro jednociferný den
+  
+    const formattedDate = `${year}-${month}-${day}`;
+    time.push({
+      date:formattedDate,
+      hours:hours
+    })
+  }
+  time.map(d=>{
+    // console.log(d.date)
+    // console.log("-----------")
+    rows.map(time =>{
+      if(time.date === d.date){
+        // console.log(true)
+        // console.log(time.hours)
+
+        d.hours =d.hours.filter(item => !time.hours.includes(item.toString()));
+        console.log(d.hours)
+      }
+    })
+
+  })
+
+
+
   const getLecturer = "SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid =contact.contact_uuid WHERE lecturer_uuid = ?";
   const getLecturer_tags = "SELECT * FROM lecturer_tags WHERE lecturer_tags.lecturer_uuid= ?";
   const getTags =  "SELECT * FROM tags";
@@ -321,7 +407,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
     }
 
     if(rows.length>0){
-      console.log(rows.length)
+     
       db.all(getLecturer_tags,rows[0].lecturer_uuid,(err, rows2) =>{
         db.all(getTags,(err,rows3)=>{
           filterTags=[]
@@ -339,7 +425,6 @@ router.get('/lecturers/:uuid', (req, res)=>{
           }
           let telNumbers = rows[0].phone_number.split(",")
           let Emils = rows[0].email.split(",")
-          console.log(filterTags)
           LecturerFull.push(
             {
               uuid:rows[0].lecturer_uuid,
@@ -363,9 +448,6 @@ router.get('/lecturers/:uuid', (req, res)=>{
           function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
           }
-
-            console.log(LecturerFull)
-            console.log(LecturerFull[0].tags)
             const l = LecturerFull[0].tags.length-1
           
           res.render('lecturer', { 
@@ -387,6 +469,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
             ,tag6 : LecturerFull[0].tags[getRandomInt(0, l)].name
             ,tag7 : LecturerFull[0].tags[getRandomInt(0, l)].name
             ,tag8 : LecturerFull[0].tags[getRandomInt(0, l)].name
+            ,time: time
            });
           // res.status(200).send(LecturerFull[0])
         })
@@ -403,6 +486,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
       return;
     }
   })
+});
 })
 router.put('/lecturers/:uuid', (req, res) => {
 
