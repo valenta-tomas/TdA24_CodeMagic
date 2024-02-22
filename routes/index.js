@@ -239,20 +239,59 @@ class Lecturer {
   
 })
 router.get('/', (req, res) => {
-  console.log(req.body.city)
+  const minP = req.query.inputMin
+  const maxP = req.query.inputMax
+  const tags = req.query.tag
+  const city = req.query.city
+  console.log(city);
+  console.log(req.query)
+
+
   const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid`;
   const getTags = `SELECT * FROM tags`;
   const Tags=[]
+  const filterRows = []
+  const filterTag= []
     db.all(getTags,(err,Tagrows)=>{
       if(err)
         return
 
     db.all(getLecturers,(err, rows)=>{
-      if(err)
+      if(err){
         return
-      
+      }
+      Tagrows.forEach(tag => {
+        if (Array.isArray(tags))
+        {
+          tags.map(t=>{
+            if(t=== tag.tag){
+              filterTag.push(tag)
+            }
+          })
+        }
+        else{
+          if(tag.tag === tags){
+            filterTag.push(tag)
+          }
+        }
+      })
+      console.log(filterTag)
+
+      rows.forEach(lector => {
+
+        if(lector.price_per_hour>= minP && lector.price_per_hour<= maxP){
+          if(city == ''){
+              filterRows.push(lector)
+          }
+          else{
+            if(lector.location.toLowerCase() === city.toLowerCase()){
+              filterRows.push(lector)
+          }
+        }
+      }});
+      console.log(filterRows)
       Tagrows.forEach(value => Tags.push(value.tag))
-      res.render('lecturers', { lector: rows, tagArray:Tags});
+      res.render('lecturers', { lectors: rows, tagArray:Tags});
       // res.status(200).send(LecturerFull)
     })
   })

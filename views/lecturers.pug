@@ -39,7 +39,7 @@ block content
       //-third part 
     div(class="lg:w-1/4 block  w-full")
       //-price range
-      form( method="POST" class="lg:text-lg xl:text-xl")
+      form( method="GET" class="lg:text-lg xl:text-xl")
         .wrapper
           .slider
             .progress
@@ -60,11 +60,11 @@ block content
           h3.title Zaměření
           each n in tagArray
             .box
-              input.checkbox(type="checkbox", id=""+n, value=""+n)
+              input.checkbox(type="checkbox", id=""+n, value=""+n name="tag")
               label(for=""+n)= n
           .print
           p.text You Have Selected: 
-          output(class="value" id="tags" name="tags")
+          p(class="value" id="tags" name="tags")
 
         div(class="")
           label(for="city") Město 

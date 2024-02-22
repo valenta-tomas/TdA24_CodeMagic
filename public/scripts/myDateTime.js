@@ -1,5 +1,6 @@
 const myDate = document.getElementById("myDate")
-const date = new Date();
+if(maxDate !== undefined ||myDate !== "") 
+{const date = new Date();
 
 const year = date.getFullYear();
 const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Přidání nuly pro jednociferný měsíc
@@ -19,4 +20,4 @@ const formattedDateMax = `${yearMax}-${monthMax}-${dayMax}`;
 // myDate.value = formattedDate;
 myDate.min = formattedDate;
 
-myDate.max = formattedDateMax;
+myDate.max = formattedDateMax;}
