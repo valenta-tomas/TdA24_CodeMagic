@@ -249,13 +249,16 @@ router.get('/', (req, res) => {
 
   const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid`;
   const getTags = `SELECT * FROM tags`;
+  const getLecturerTag =  `SELECT * FROM lecturer_tags`;
   const Tags=[]
   const filterRows = []
   const filterTag= []
+    db.all(getLecturerTag, (err, LtagRows)=>{
+
+
     db.all(getTags,(err,Tagrows)=>{
       if(err)
         return
-
     db.all(getLecturers,(err, rows)=>{
       if(err){
         return
@@ -275,26 +278,59 @@ router.get('/', (req, res) => {
           }
         }
       })
+
+
+      rows.map(m=>{
+        LtagRows.map(n=>{
+          if(m.lecturer_uuid === n.lecturer_uuid){
+            if (!m.tags) {
+              m.tags = []; 
+            }
+            m.tags.push(n)
+          }
+        })
+      })
       console.log(filterTag)
-
       rows.forEach(lector => {
-
         if(lector.price_per_hour>= minP && lector.price_per_hour<= maxP){
-          if(city == ''){
-              filterRows.push(lector)
+
+          if(tags.length===0){
+                      if(city === ''){
+                        filterRows.push(lector)
+                    }
+                    else{
+                      if(lector.location.toLowerCase() === city.toLowerCase()){
+                        filterRows.push(lector)
+                    }
+                  }
           }
+          
           else{
-            if(lector.location.toLowerCase() === city.toLowerCase()){
-              filterRows.push(lector)
-          }
-        }
+            let includeTag = lector.tags.some(objekt1 =>
+              filterTag.some(objekt2 => objekt1.tag_uuid === objekt2.tag_uuid)
+              );
+          if(includeTag){
+                  if(city === ''){
+                      filterRows.push(lector)
+                  }
+                  else{
+                    if(lector.location.toLowerCase() === city.toLowerCase()){
+                      filterRows.push(lector)
+                  }
+                }
+              }
+            }
       }});
-      console.log(filterRows)
+      console.log(filterRows.length)
+
+      // console.log(filterRows)
       Tagrows.forEach(value => Tags.push(value.tag))
       res.render('lecturers', { lectors: rows, tagArray:Tags});
       // res.status(200).send(LecturerFull)
     })
   })
+  })
+
 });
 
 router.delete('/lecturers/:uuid', (req, res, next) => {
