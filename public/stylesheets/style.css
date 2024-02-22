@@ -12,21 +12,41 @@ body{
 p, h1{
   color: white;
 }
-/*checkbox*/
-.container {
-  font-weight: 500;
+/*style for filters*/
+.border{
+  margin-top: 20px;
+  margin-right: 5px;
   border: 1px solid snow;
+  font-weight: 500;
   border-radius: 10px;
-  padding: 30px;
 }
-.title {
-  text-transform: uppercase;
-  padding-bottom: 20px;
+.container{
+  color: snow;
+}
+.text{
+  font-size: 22px;
+}
+.city{
+  border-top: 1px solid snow;
   text-align: center;
 }
+.city input{
+  width: 90%;
+  color: black;
+  border-radius: 5px;
+}
+/*checkbox*/
+.title {
+  padding-bottom: 10px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 22px;
+}
 .box {
-  padding: 10px 0;
+  padding: 3px 0;
   border-bottom: 1px solid snow;
+  width: 70%;
+  transform: translateX(20px);
 }
 label {
   font-size: 24px;
@@ -51,8 +71,8 @@ label {
 .wrapper{
  max-width: 100%;
   background: #fff;
-  border-radius: 10px;
-  padding: 20px 25px 40px;
+  border-radius: 10px 10px 0px 0px ;
+  padding: 20px 25px 10px;
 }
 .price-input{
   width: 100%;
@@ -70,7 +90,6 @@ label {
   height: 100%;
   outline: none;
   font-size: 19px;
-  margin-left: 12px;
   border-radius: 5px;
   text-align: center;
   border: 1px solid #999;
