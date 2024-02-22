@@ -243,8 +243,10 @@ router.get('/', (req, res) => {
   const maxP = req.query.inputMax
   const tags = req.query.tag
   const city = req.query.city
+  console.log(minP)
+  console.log(maxP)
+  console.log(tags)
   console.log(city);
-  console.log(req.query)
 
 
   const getLecturers = `SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid = contact.contact_uuid`;
@@ -279,7 +281,9 @@ router.get('/', (req, res) => {
         }
       })
 
-
+      if(minP== undefined && maxP == undefined && tags==undefined && city == undefined){
+        filterRows.push(...rows)
+      }
       rows.map(m=>{
         LtagRows.map(n=>{
           if(m.lecturer_uuid === n.lecturer_uuid){
@@ -294,7 +298,7 @@ router.get('/', (req, res) => {
       rows.forEach(lector => {
         if(lector.price_per_hour>= minP && lector.price_per_hour<= maxP){
 
-          if(tags.length===0){
+          if(tags== undefined || tags.length==0){
                       if(city === ''){
                         filterRows.push(lector)
                     }
@@ -325,7 +329,7 @@ router.get('/', (req, res) => {
 
       // console.log(filterRows)
       Tagrows.forEach(value => Tags.push(value.tag))
-      res.render('lecturers', { lectors: rows, tagArray:Tags});
+      res.render('lecturers', { lectors: filterRows, tagArray:Tags});
       // res.status(200).send(LecturerFull)
     })
   })
