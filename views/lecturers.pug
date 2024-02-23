@@ -40,7 +40,13 @@ block content
       each lector in lectors 
         a(href="/lecturers/"+lector.lecturer_uuid class="shadow-black shadow-md rounded-md p-4 max-h-[90vh] lg:max-h-[50vh] xl:max-h-[35vh]"  target="_blank" rel="noopener noreferrer")
           img(src=lector.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4 my-2")
-          h2(class="mt-9 text-xl px-10 text-white font-bold")=lector.title_before +" "+ lector.first_name+" "+ lector.middle_name +" "+lector.last_name+" "+lector.title_after
+          - var title_before = lector.title_before || ""
+          - var middle_name = lector.middle_name || ""
+          - var title_after = lector.title_after || ""
+          - var first_name = lector.first_name || ""
+          - var last_name = lector.last_name || ""
+
+          h2(class="mt-9 text-2xl px-10 text-white font-bold")=title_before +" "+ first_name+" "+ middle_name +" "+last_name+" "+title_after
           p(class="mt-9 text-xl px-10")=lector.claim
           p(class="mt-9 text-xl px-10")="Cena za hodinu: "+lector.price_per_hour
           p(class="px-10")= "Lokace: "+lector.location
