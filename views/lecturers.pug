@@ -47,8 +47,8 @@ block content
           - var last_name = lector.last_name || ""
 
           h2(class="mt-9 text-2xl px-10 text-white font-bold")=title_before +" "+ first_name+" "+ middle_name +" "+last_name+" "+title_after
-          p(class="mt-9 text-xl px-10")=lector.claim
-          p(class="mt-9 text-xl px-10")="Cena za hodinu: "+lector.price_per_hour
+          p(class="mt-5 text-xl px-10")=lector.claim
+          p(class="mt-5 text-xl px-10")="Cena za hodinu: "+lector.price_per_hour
           p(class="px-10")= "Lokace: "+lector.location
 
       //-   a(href="/lecturers/"+n.uuid class="w-2/3 mx-auto  my-11") 

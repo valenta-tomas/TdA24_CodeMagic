@@ -1,7 +1,13 @@
 extends layout
 
 block content
-  main(class="max-w-full box-border text-white m-0 p-0 sm:text-lg lg:grid lg:grid-cols-3 lg:gap-x-0 max-h-screen lg:overflow-hidden") 
+  main(class="max-w-full box-border text-white m-0 p-0 sm:text-lg lg:grid lg:grid-cols-3 lg:gap-x-0 max-h-screen lg:overflow-hidden")
+    - var title_before = title_before || ""
+    - var middle_name = middle_name || ""
+    - var title_after = title_after || ""
+    - var first_name = first_name || ""
+    - var last_name = last_name || ""
+    - var full_name = title_before +" " +first_name+" " +middle_name+" " + last_name+" " + title_after
     //- first part
     section(class="max-w-[90%] mx-auto lg:w-full")
       a(href="../../" rel="noopener noreferrer") 

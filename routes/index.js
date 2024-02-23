@@ -539,7 +539,11 @@ router.get('/lecturers/:uuid', (req, res)=>{
           res.render('lecturer', { 
             title_before: LecturerFull[0].title_before,
             title:"lecturer"
-            ,full_name: LecturerFull[0].title_before +" "+LecturerFull[0].first_name+" "+LecturerFull[0].middle_name +" "+LecturerFull[0].last_name+" "+LecturerFull[0].title_after
+            ,title_before: LecturerFull[0].title_before
+            ,first_name: LecturerFull[0].first_name
+            ,middle_name: LecturerFull[0].middle_name
+            ,last_name: LecturerFull[0].last_name
+            ,title_after: LecturerFull[0].title_after
             ,picture_url:LecturerFull[0].picture_url
             ,location:LecturerFull[0].location
             ,price_per_hour:LecturerFull[0].price_per_hour
