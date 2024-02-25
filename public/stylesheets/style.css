@@ -12,6 +12,12 @@ body{
 p, h1{
   color: white;
 }
+/*style for form*/
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+
+}
 /*style for filters*/
 .border{
   margin-top: 20px;

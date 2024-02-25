@@ -1,5 +1,6 @@
 const myDate = document.getElementById("myDate")
-if(maxDate !== undefined ||myDate !== "") 
+console.log(myDate)
+if(myDate !== undefined ||myDate !== "") 
 {const date = new Date();
 
 const year = date.getFullYear();

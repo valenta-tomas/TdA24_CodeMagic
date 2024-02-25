@@ -7,6 +7,7 @@ const data= require('../public/data/lecturer.json');
 
 const bcrypt = require('bcrypt')
 const passport = require('passport')
+const { createICalFile } = require('../icalGenerator');
 const db = new sqlite3.Database("data/db.sqlite");
 db.run('CREATE TABLE IF NOT EXISTS lecturers (lecturer_uuid UUID NOT NULL, title_before VARCHAR(255), first_name VARCHAR(255) NOT NULL, middle_name VARCHAR(255), last_name VARCHAR(255) NOT NULL, title_after VARCHAR(255), picture_url VARCHAR(255), location VARCHAR(255), claim VARCHAR(255), bio TEXT, price_per_hour NUMERIC(10,2), contact_uuid UUID NOT NULL, PRIMARY KEY (lecturer_uuid), FOREIGN KEY (contact_uuid) REFERENCES contact (contact_uuid));');
 db.run('CREATE TABLE IF NOT EXISTS tags (tag_uuid UUID NOT NULL, tag CHAR(255) NOT NULL, PRIMARY KEY (tag_uuid));')
@@ -37,7 +38,6 @@ function GetUser(){
       )
     }
   });
-
 }
 
 
@@ -753,8 +753,53 @@ else{
 // router.get('/', function(req, res, next) {
 //   res.render('index', { title: 'ExpressTEST2' });
 // });
+
+
+// {
+//   id_user: 9,
+//   name: 'tom',
+//   password: '$2b$10$jmve4FsskCEiOH2Nd.5twe/mhL0is37j5KvU3TcuVZ/U.KhSfsEWK',
+//   lecturer_uuid: '0319be7b-6a7e-41ca-b8a1-c2b47bd3bd37'
+// }
 router.get('/user',checkAuthenticated, (req, res)=>{
-  res.render('user.pug')
+  const reservation = `SELECT * FROM reservation WHERE lecturer_uuid = ?`;
+  db.all(reservation,[req.user.lecturer_uuid],(err, rows)=>{
+    if(err){
+      return console.error(err)
+    }
+    const formatData =[]
+    rows.map(student=>{
+      student.hours = student.hours.split(",")
+      student.hours.map(hour=>{
+        if(hour.length <2){
+          formatData.start=`${student.date}T0${hour}:00:00`
+          if(parseInt(hour+1)<10){
+            formatData.end=`${student.date}T0${parseInt(hour)+1}:00:00`
+          }
+          else{
+            formatData.end=`${student.date}T${parseInt(hour)+1}:00:00`
+          }
+
+
+        }
+        else{
+          formatData.start=`${student.date}T${hour}:00:00`
+          formatData.end=`${student.date}T${parseInt(hour)+1}:00:00`
+        }
+      })
+
+    })
+    formatData.summary ="a"
+    formatData.description ="a"
+    formatData.location ="a"
+    const ahojj = `${rows[0].date}T${rows[0].hours[0]}:00:00`
+    console.log(ahojj)
+    console.log(rows)
+    console.log(formatData)
+
+
+  res.render('user.pug',{reservation: rows})
+})
 })
 router.get('/login',checkNotAuthenticated, (req, res)=>{
   GetUser()

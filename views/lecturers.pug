@@ -38,18 +38,18 @@ block content
 
     section(class="w-full order-last lg:order-2 lg:max-w-[60vw] grid grid-cols-1 gap-y-12 mt-10 mr-[5vw] sm:grid-cols-2 lg:sm:grid-cols-1")
       each lector in lectors 
-        a(href="/lecturers/"+lector.lecturer_uuid class="shadow-black shadow-md rounded-md p-4 max-h-[90vh] lg:max-h-[50vh] xl:max-h-[35vh]"  target="_blank" rel="noopener noreferrer")
+        a(href="/lecturers/"+lector.lecturer_uuid class="shadow-black shadow-md rounded-md p-4 max-h-[90vh] lg:max-h-[50vh] xl:max-h-[35vh] bg-[#02384D]"  target="_blank" rel="noopener noreferrer")
           img(src=lector.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4 my-2")
           - var title_before = lector.title_before || ""
           - var middle_name = lector.middle_name || ""
           - var title_after = lector.title_after || ""
           - var first_name = lector.first_name || ""
           - var last_name = lector.last_name || ""
-
-          h2(class="mt-9 text-2xl px-10 text-white font-bold")=title_before +" "+ first_name+" "+ middle_name +" "+last_name+" "+title_after
-          p(class="mt-5 text-xl px-10")=lector.claim
-          p(class="mt-5 text-xl px-10")="Cena za hodinu: "+lector.price_per_hour
-          p(class="px-10")= "Lokace: "+lector.location
+          div(class="lg:float-left lg:max-w-[70%]")
+            h2(class="mt-9 text-2xl px-10 text-white font-bold")=title_before +" "+ first_name+" "+ middle_name +" "+last_name+" "+title_after
+            p(class="mt-5 text-xl px-10")=lector.claim
+            p(class="mt-5 text-xl px-10")="Cena za hodinu: "+lector.price_per_hour
+            p(class="px-10")= "Lokace: "+lector.location
 
       //-   a(href="/lecturers/"+n.uuid class="w-2/3 mx-auto  my-11") 
       //-     img(src=n.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4")
@@ -67,8 +67,9 @@ block content
       //-third part 
     section(class="lg:max-w-[30vw] xl:max-w-[20vw] block w-full float-right lg:order-3")
       div(class="border sticky top-[10vh]")
+        h1(class="title") Najdi si lektora na míru
         //-price range
-        form(action="/", method="GET" class="lg:text-lg xl:text-xl")
+        form(action="/", method="GET" class="lg:text-lg xl:text-xl bg-[#02384D]")
           .wrapper
             .slider
               .progress

@@ -7,7 +7,7 @@ block content
     - var title_after = title_after || ""
     - var first_name = first_name || ""
     - var last_name = last_name || ""
-    - var full_name = title_before +" " +first_name+" " +middle_name+" " + last_name+" " + title_after
+    - var full_name = title_before +" " +first_name+" " +middle_name+" " + last_name + title_after 
     //- first part
     section(class="max-w-[90%] mx-auto lg:w-full")
       a(href="../../" rel="noopener noreferrer") 
@@ -19,7 +19,7 @@ block content
         img(loading="lazy" src="../../../img/sipka.png", alt="ikonka šipky", class="hidden sm:block absolute left-0 bottom-0 rotate-90 w-3/12")
       h1(class="hidden text-5xl font-bold pl-10 sm:block clear-both max-w-7xl sm:mt-0 lg:hidden")= full_name    
       p(class="text-center mt-7 mb-6 sm:clear-both lg:hidden")= claim
-      ul(class="max-w-[40%] inline-block text-balance lg:hidden")
+      ul(class="max-w-[40%] inline-block text-balance lg:hidden font-bold")
         li= "Lokace: "+location
         li="Cena za hodinu: "+price_per_hour+" Kč"
       button(onclick="showForm()" class="bg-[#74C7D3] w-32 h-12 rounded-lg inline-block float-right mr-7 text-lg sm:mr-24 lg:float-none lg:w-56 lg:h-20 lg:text-4xl lg:block lg:mx-auto ") Rezervovat
@@ -33,10 +33,10 @@ block content
       div(class="mt-7 lg:max-h-[30vh] lg:overflow-y-auto")
         != bio
       p(class="hidden lg:block pt-6")= claim
-      ul(class="hidden lg:block lg:text-right pt-6")
+      ul(class="hidden lg:block lg:text-right pt-6 text-2xl font-bold")
         li= "Lokace: "+location
         li="Cena za hodinu: "+price_per_hour+" Kč"
-      div(class="hidden max-w-full text-left pb-5 pt-4 lg:block")
+      div(class="hidden max-w-full text-left pb-5 pt-4 lg:block font-bold" )
         h2(class="text-3xl uppercase")="Kontakt"
         a(href="tel:"+telephone_numbers) 
           p(class="py-2 text-xl")= telephone_numbers
@@ -98,79 +98,81 @@ block content
         p(class="text-lg py-2")= telephone_numbers
       a(href="mailto:"+emails) 
         p(class="text-lg py-1")=emails
-  div(class="absolute inset-0 h-[150vh] sm-h-[130vh] lg:h-[100vh] bg-black bg-opacity-50 backdrop-filter backdrop-blur-md hidden" id="formBg")
-  div(class="w-full min-h-[70vh] max-h-full absolute top-20 left-1/2 -translate-x-1/2 rounded-lg z-100 bg-[#02384D] sm:w-[80vw] lg:w-[65vw] lg:h-[80vh] lg:aspect-ratio-1 xl:w-[50vw] hidden" id="form")
-    button(onclick="hiddenForm()" class="absolute right-[4vw] top-[2vh] sm:right-[1vw] sm:top-[1vh] max-w-[10%]")
-      img(loading="lazy" src="../../../img/end.png", alt="" class="")   
+      //-form
+  div(class="fixed inset-0 z-10 h-[100%] max-h-fit bg-black bg-opacity-50 backdrop-filter backdrop-blur-md hidden sm:items-center" id="formBg")
+  div(class="w-full min-h-[70vh] absolute z-20 top-20 left-1/2 -translate-x-1/2 rounded-lg z-100 bg-[#02384D] max-h-fit sm:max-h-fit lg:w-[65vw] lg:max-h-fit lg:aspect-ratio-1 xl:w-[50vw] hidden " id="form")
+    button(onclick="hiddenForm()" class="absolute right-[4vw] top-[2vh] sm:right-[1vw] sm:top-[4vh] max-w-[10%]")
+      img(loading="lazy" src="../../../img/end.png", alt="" class="w-full sm:w-2/3 lg:w-2/3")   
     form(action='' method="POST" class="w-full flex flex-col space-y-4 p-6 text-xl font-bold text-white")
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Jméno 
         input(type="text", name="first_name" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Přijímení 
         input(type="text", name="last_name" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff] " required)
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Datum 
         input(type="date" name="date" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" id="myDate" onchange="getDate()" required)
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Hodiny 
 
-      div(data-my-object=JSON.stringify(time))
-      div(id="myCheckBox")
-       script.
-        // Získání objektu ze stránky pomocí datového atributu
-        function getDate(){
-          var divElement = document.getElementById("myCheckBox");
-          while (divElement.firstChild) {
-            divElement.removeChild(divElement.firstChild);
+      div(data-my-object=JSON.stringify(time) class="hidden")
+      div(id="myCheckBox" class="grid grid-cols-4 gap-4 lg:max-w-[40vw] mx-auto items-center justify-center")
+        script.
+          // Získání objektu ze stránky pomocí datového atributu
+          function getDate(){
+            var divElement = document.getElementById("myCheckBox");
+            while (divElement.firstChild) {
+              divElement.removeChild(divElement.firstChild);
+            }
+            var date = document.getElementById("myDate").value
+            var myObjectFromServer = JSON.parse(document.querySelector('[data-my-object]').getAttribute('data-my-object'));
+            myObjectFromServer.forEach(myFunction)
+
+          function myFunction(item, index, arr) {
+          if(item.date === date){
+            item.hours.forEach((v)=>{
+              var newCheckbox = document.createElement("input");
+              var newLabel =  document.createElement("label");
+              newCheckbox.type = "checkbox";
+              newCheckbox.name = "hours";
+              newCheckbox.value = v;
+              newCheckbox.id = v;
+
+
+              newLabel.htmlFor = v;
+              var text = document.createTextNode(v+":00" + "-"+parseInt(v+1)+":00");
+              newLabel.appendChild(text)
+              divElement.appendChild(newLabel)
+              divElement.appendChild(newCheckbox)
+
+
+            })
+            console.log(item)
           }
-          var date = document.getElementById("myDate").value
-          var myObjectFromServer = JSON.parse(document.querySelector('[data-my-object]').getAttribute('data-my-object'));
-          myObjectFromServer.forEach(myFunction)
-
-        function myFunction(item, index, arr) {
-         if(item.date === date){
-          item.hours.forEach((v)=>{
-            var newCheckbox = document.createElement("input");
-            var newLabel =  document.createElement("label");
-            newCheckbox.type = "checkbox";
-            newCheckbox.name = "hours";
-            newCheckbox.value = v;
-            newCheckbox.id = v;
-
-            newLabel.htmlFor = v;
-            var text = document.createTextNode(v+":00" + "-"+parseInt(v+1)+":00");
-            newLabel.appendChild(text)
-            divElement.appendChild(newLabel)
-            divElement.appendChild(newCheckbox)
-
-
-          })
-          console.log(item)
-         }
-        }
-        }
+          }
+          }
 
         
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
-        label(for="online") Online
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] lg:mx-auto sm:mx-auto")
+        label(for="online" class="mr-2") Online
         input(type="radio" id="online" name="meeting" value="online" required) 
-        label(for="personally") Osobně
-        input(type="radio" id="personally" name="meeting" value="osobně" required) 
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+        label(for="personally" class="mr-2 ml-20") Osobně
+        input(type="radio" id="personally" name="meeting" value="osobně" required)  
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") E-mail
         input(type="email", name="email" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tel. číslo
         input(type="tel", name="phone" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tagy
         select(name="tag" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff] text-white")
           each tag in tags
             option(value=""+tag.name class="text-white")= tag.name
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw]")
+      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]" ) Popisek
         textarea(name="description", cols="20", rows="10" class="w-full sm:w-3/5 h-[13vh] bg-[#74C7D3] rounded-lg float-right text-sm focus:outline-none focus:ring focus:ring-[#fff]" )
       div(class="max-w-[70vw] mx-auto")
         button(type="submit" class="w-full h-[7vh] bg-[#74C7D3] rounded-lg px-5 focus:outline-none focus:ring focus:ring-[#fff]") Rezervovat
-      img(loading="lazy" src="../../../img/login.png", alt="" class="absolute w-32 right-[2.5vw] bottom-[3vh] hidden lg:block")      
+      img(loading="lazy" src="../../../img/login.png", alt="" class="absolute w-20 right-[2.5vw] bottom-[3vh] hidden lg:block")      

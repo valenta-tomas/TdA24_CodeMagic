@@ -1,5 +1,21 @@
 extends layout
 block content
-    h1= "ahoj"
-    form(action="/logout?_method=DELETE" method="POST")
-        button(type="submit") Log Out
+    main
+        section
+             a(href="../../" rel="noopener noreferrer") 
+                img(loading="lazy" src="../img/logo.png", alt="logo", class="w-40 pt-8 pl-4 sm:w-56 sm:inline-block lg:block lg:pl-0")
+        section   
+            each student in reservation
+                div(class="shadow-black shadow-md rounded-md p-4 max-h-[90vh] lg:max-h-[50vh] xl:max-h-[35vh] bg-[#02384D]")
+                    p= student.first_name
+                    p= student.last_name
+                    p= student.date
+                    p= student.email
+                    p= student.phone
+                    p= student.tag
+                    p= student.description     
+                    p= student.hours       
+                    p= student.meeting
+        section          
+            form(action="/logout?_method=DELETE" method="POST")
+                button(type="submit") Log Out
