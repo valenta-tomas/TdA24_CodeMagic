@@ -1,21 +1,25 @@
 extends layout
 block content
-    main
-        section
+    main(class="flex flex-col lg:flex-row ")
+        section(class="w-[20vw]")
              a(href="../../" rel="noopener noreferrer") 
                 img(loading="lazy" src="../img/logo.png", alt="logo", class="w-40 pt-8 pl-4 sm:w-56 sm:inline-block lg:block lg:pl-0")
-        section   
+        section(class="w-full lg:w-[60vw] order-3 lg:order-2")   
             each student in reservation
-                div(class="shadow-black shadow-md rounded-md p-4 max-h-[90vh] lg:max-h-[50vh] xl:max-h-[35vh] bg-[#02384D]")
-                    p= student.first_name
-                    p= student.last_name
-                    p= student.date
-                    p= student.email
-                    p= student.phone
-                    p= student.tag
-                    p= student.description     
-                    p= student.hours       
-                    p= student.meeting
-        section          
+                div(class="shadow-black shadow-md rounded-md p-4 max-h-[90vh] lg:max-h-full xl:max-h-[35vh] bg-[#02384D] grid grid-cols-2")
+                    div()
+                        p= "Jméno: "+student.first_name +" " + student.last_name
+                        p= "Schůzka je: "+student.meeting
+                        a(href="mailto:"+student.email class="block text-white")="Mail: "+ student.email
+                        a(href="tel:+" +student.phone class="block text-white")="Telefon: "+ student.phone
+                    div()
+                        p= "Datum konání schůzky: "+student.date
+                        p= "Hodiny: "+student.hours   
+                        p= "Tag: "+student.tag
+                        p= "Popisek: "+student.description     
+
+        section(class="w-[20vw] order-2 lg:order-3")          
             form(action="/logout?_method=DELETE" method="POST")
                 button(type="submit") Log Out
+            h1= 'Download Page'
+            a(href='/user/download/calendar') Download Calendar

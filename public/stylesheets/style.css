@@ -120,8 +120,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .slider .progress{
   height: 100%;
-  left: 25%;
-  right: 25%;
+  left: 5%;
+  right: 70%;
   position: absolute;
   border-radius: 5px;
   background: #74C7D3;
@@ -179,6 +179,11 @@ input[type="range"]::-moz-range-thumb{
 
 /* Pro všechny ostatní prohlížeče */
 /* Nastavení šířky posuvníku */
+
 * {
   scrollbar-width: thin; /* Možnosti: auto | thin | none */
+  font-family: "Comfortaa", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+
 }

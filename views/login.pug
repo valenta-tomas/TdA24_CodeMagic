@@ -6,16 +6,15 @@ block content
     div(class="absolute inset-x-0 top-0 flex justify-center z-20")
       div(class="title lg:w-[28vw] w-[90%] bg-[#74C7D3] lg:bg-opacity-80 flex justify-center items-center h-40")= messages.error
   a(href="/") 
-    img(loading="lazy" src="../../../img/logo.png", alt="logo", class="w-40 sm:w-56 absolute top-10 left-8 z-10")
-  div(class="h-auto relative w-screen lg:w-[70vw] lg:mx-auto lg:h-auto mt-[20vh] xl:w-[45vw] lg:mt-0")
-    div(class="h-full bg-black bg-opacity-40 lg:rounded-2xl") 
-      img(loading="lazy" src="../../../img/ikona_login.png", alt="logo", class="max-w-full sm:w-[70vw]")
-      form(action="/login", method="POST" class="w-full text-white")
-        div
-          label(for="name" class="block pb-3") Přihlašovací jméno
-          input(type="text" id="name" name="name" class="pl-3 w-[80%] block mx-auto h-10 rounded-xl text-black lg:h-14 xl:h-20 xl:text-3xl focus:outline-none focus:ring focus:ring-[#74C7D3]" required)
-        div(class="mt-4")
-          label(for="password" class="block pb-3") Heslo
-          input(type="password" id="password" name="password" class="pl-3 w-[80%] block mx-auto h-10 rounded-xl text-black lg:h-14 xl:h-20 xl:text-3xl focus:outline-none focus:ring focus:ring-[#74C7D3]" required)
-        button(type="submit" class="mb-5 lg:mb-0 block mx-auto py-5 bg-[#74C7D3] font-bold px-16 rounded-xl mt-[15%] sm:mt-[10%] lg:mt-[5%] focus:outline-none focus:ring focus:ring-[#fff]") Přihlásit 
+    img(loading="lazy" src="../../../img/logo.png", alt="logo", class="w-40 sm:w-56 absolute top-10 left-8 z-10 px-4")
+  div(class="h-auto relative w-screen lg:w-[70vw] lg:mx-auto mt-[20vh] xl:w-[45vw] lg:mt-0 bg-black bg-opacity-40 rounded-lg")
+    img(loading="lazy" src="../../../img/ikona_login.png", alt="logo", class="max-w-full sm:w-[70%] mx-auto")
+    form(action="/login", method="POST" class="w-full text-white")
+      div
+        label(for="name" class="block pb-3 w-[90%] mx-auto") Přihlašovací jméno
+        input(type="text" id="name" name="name" class="pl-3 w-[90%] mx-auto block h-10 rounded-xl text-black lg:h-14 xl:h-20 xl:text-3xl focus:outline-none focus:ring focus:ring-[#74C7D3]" required)
+      div(class="mt-4")
+        label(for="password" class="block pb-3 w-[90%] mx-auto") Heslo
+        input(type="password" id="password" name="password" class="pl-3 w-[90%] mx-auto block h-10 rounded-xl text-black lg:h-14 xl:h-20 xl:text-3xl focus:outline-none focus:ring focus:ring-[#74C7D3]" required)
+      button(type="submit" class=" lg:mb-0 block mx-auto py-5 bg-[#74C7D3] font-bold px-16 rounded-xl mt-[15%] sm:mt-[10%] lg:mt-[5%] focus:outline-none focus:ring focus:ring-[#fff]") Přihlásit 
       

@@ -1,6 +1,6 @@
-const ical = require('ical-generator');
+const ical = require('ical-generator').default;
 
-function createEvents(jsonData) {
+function createICalFile(formatData) {
     const calendar = ical({
         domain: 'example.com',
         prodId: { company: 'Example Inc.', product: 'Calendar' },
@@ -9,7 +9,7 @@ function createEvents(jsonData) {
     });
 
     // Vytvoření událostí z JSON dat
-    jsonData.forEach(eventData => {
+    formatData.forEach(eventData => {
         calendar.createEvent({
             start: new Date(eventData.start),
             end: new Date(eventData.end),
@@ -22,4 +22,4 @@ function createEvents(jsonData) {
     return calendar.toString();
 }
 
-module.exports = { createEvents };
+module.exports = { createICalFile };

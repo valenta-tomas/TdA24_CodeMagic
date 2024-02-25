@@ -325,8 +325,19 @@ router.get('/', (req, res) => {
               }
             }
       }});
-      console.log(filterRows.length)
 
+      filterRows.forEach(element => {
+        element.tags.forEach(tag => {
+          Tagrows.map(t =>{
+            if(tag.tag_uuid === t.tag_uuid){
+              tag.name = t.tag
+            }
+          })
+
+        });
+        
+      });
+      console.log(filterRows[0])
       // console.log(filterRows)
       Tagrows.forEach(value => Tags.push(value.tag))
       res.render('lecturers', { lectors: filterRows, tagArray:Tags});
@@ -768,37 +779,85 @@ router.get('/user',checkAuthenticated, (req, res)=>{
       return console.error(err)
     }
     const formatData =[]
-    rows.map(student=>{
-      student.hours = student.hours.split(",")
-      student.hours.map(hour=>{
-        if(hour.length <2){
-          formatData.start=`${student.date}T0${hour}:00:00`
-          if(parseInt(hour+1)<10){
-            formatData.end=`${student.date}T0${parseInt(hour)+1}:00:00`
+
+    rows.map(student => {
+
+    try {
+      
+    } catch (error) {
+      
+    }
+      student.hours = student.hours.split(",");
+      student.hours.map(hour => {
+        const studentData = {
+          description: student.description,
+          summary: "Rezervace s " + student.first_name + " " + student.last_name,
+          location: "Místo konání: " + student.meeting
+        };
+        if (hour.length < 2) {
+          studentData.start = `${student.date}T0${hour}:00:00`;
+          if (parseInt(hour) + 1 < 10) {
+            studentData.end = `${student.date}T0${parseInt(hour) + 1}:00:00`;
+          } else {
+            studentData.end = `${student.date}T${parseInt(hour) + 1}:00:00`;
           }
-          else{
-            formatData.end=`${student.date}T${parseInt(hour)+1}:00:00`
-          }
-
-
+        } else {
+          studentData.start = `${student.date}T${hour}:00:00`;
+          studentData.end = `${student.date}T${parseInt(hour) + 1}:00:00`;
         }
-        else{
-          formatData.start=`${student.date}T${hour}:00:00`
-          formatData.end=`${student.date}T${parseInt(hour)+1}:00:00`
-        }
-      })
-
-    })
-    formatData.summary ="a"
-    formatData.description ="a"
-    formatData.location ="a"
-    const ahojj = `${rows[0].date}T${rows[0].hours[0]}:00:00`
-    console.log(ahojj)
+        
+        formatData.push(studentData); // Přidat studentData do pole formatData
+      });
+    });
     console.log(rows)
     console.log(formatData)
+    res.render('user.pug',{reservation: rows})
+})
+})
+router.get('/user/download/calendar',checkAuthenticated, (req, res)=>{
+  const reservation = `SELECT * FROM reservation WHERE lecturer_uuid = ?`;
+  db.all(reservation,[req.user.lecturer_uuid],(err, rows)=>{
+    if(err){
+      return console.error(err)
+    }
+    const formatData =[]
 
+    rows.map(student => {
 
-  res.render('user.pug',{reservation: rows})
+    try {
+      
+    } catch (error) {
+      
+    }
+      student.hours = student.hours.split(",");
+      student.hours.map(hour => {
+        const studentData = {
+          description: student.description,
+          summary: "Rezervace s " + student.first_name + " " + student.last_name,
+          location: "Místo konání: " + student.meeting
+        };
+        if (hour.length < 2) {
+          studentData.start = `${student.date}T0${hour}:00:00`;
+          if (parseInt(hour) + 1 < 10) {
+            studentData.end = `${student.date}T0${parseInt(hour) + 1}:00:00`;
+          } else {
+            studentData.end = `${student.date}T${parseInt(hour) + 1}:00:00`;
+          }
+        } else {
+          studentData.start = `${student.date}T${hour}:00:00`;
+          studentData.end = `${student.date}T${parseInt(hour) + 1}:00:00`;
+        }
+        
+        formatData.push(studentData); // Přidat studentData do pole formatData
+      });
+    });
+    console.log(rows)
+    console.log(formatData)
+    const iCalData = createICalFile(formatData);
+    const fileName = 'calendar.ics';
+    res.setHeader('Content-Type', 'text/calendar');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(iCalData);
 })
 })
 router.get('/login',checkNotAuthenticated, (req, res)=>{
