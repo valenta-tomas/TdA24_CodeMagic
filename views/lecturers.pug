@@ -37,7 +37,7 @@ block content
 
 
     section(class="w-full order-last lg:order-2 lg:max-w-[60vw] grid grid-cols-1 gap-y-12 mt-10 mr-[5vw] sm:grid-cols-2 lg:sm:grid-cols-1")
-      button(class="lg:hidden title sticky top-0 bg-[#74C7D3] bg-opacity-80 text-white" onclick="showFilter()")= "Najdi si lektora na míru" 
+      button(class="sm:hidden title sticky top-0 bg-[#74C7D3] bg-opacity-80 text-white" onclick="showFilter()")= "Najdi si lektora na míru" 
       each lector in lectors 
         a(href="/lecturers/"+lector.lecturer_uuid class="shadow-black shadow-md rounded-md p-4 max-h-auto  lg:max-h-[50vh] xl:max-h-[35vh] bg-[#02384D] focus:outline-none focus:ring focus:ring-[#fff]" rel="noopener noreferrer")
           img(src=lector.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4 my-2")
@@ -75,7 +75,7 @@ block content
 
       a(href="/login" class="bg-[#74C7D3] rounded-lg block w-3/4 mx-auto mt-7 px-2 text-center py-2 text-lg focus:outline-none focus:ring focus:ring-[#fff]") Přihlášení pro lektory 
       h1(class="title hidden lg:block w-full grow ") Najdi si lektora na míru
-      div(class="border sticky top-[10vh] hidden lg:block z-10" id="filterShow")
+      div(class="border sticky top-[10vh] hidden sm:block z-10" id="filterShow")
 
         //-price range
         form(action="/", method="GET" class="lg:text-lg xl:text-xl bg-[#02384D]")

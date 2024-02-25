@@ -848,7 +848,12 @@ router.get('/user/download/calendar',checkAuthenticated, (req, res)=>{
     console.log(rows)
     console.log(formatData)
     const iCalData = createICalFile(formatData);
-    const fileName = 'calendar.ics';
+    const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+    const fileName = formattedDate+'-plan_vyuky'+'.ics';
     res.setHeader('Content-Type', 'text/calendar');
     res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
     res.send(iCalData);

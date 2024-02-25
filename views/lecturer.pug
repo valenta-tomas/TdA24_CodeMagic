@@ -107,15 +107,19 @@ block content
     form(action='' method="POST" class="w-full flex flex-col space-y-4 p-6 text-xl font-bold text-white")
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Jméno 
+          span(class="text-[#FEC93D]") *
         input(type="text", name="first_name" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Přijímení 
+          span(class="text-[#FEC93D]") *
         input(type="text", name="last_name" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff] " required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
-        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Datum 
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Datum
+          span(class="text-[#FEC93D]") * 
         input(type="date" name="date" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" id="myDate" onchange="getDate()" required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
-        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Hodiny 
+        label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Hodiny
+          span(class="text-[#FEC93D]") * 
 
       div(data-my-object=JSON.stringify(time) class="hidden")
       div(id="myCheckBox" class="grid grid-cols-4 gap-4 lg:max-w-[40vw] mx-auto items-center justify-center")
@@ -157,14 +161,18 @@ block content
         
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] lg:mx-auto sm:mx-auto")
         label(for="online" class="mr-2") Online
+          span(class="text-[#FEC93D]") *
         input(type="radio" id="online" name="meeting" value="online" required) 
         label(for="personally" class="mr-2 ml-20") Osobně
+          span(class="text-[#FEC93D]") *
         input(type="radio" id="personally" name="meeting" value="osobně" required)  
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") E-mail
+          span(class="text-[#FEC93D]") *
         input(type="email", name="email" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Tel. číslo
+          span(class="text-[#FEC93D]") *
         input(type="tel", name="phone" class="w-full sm:w-3/5 h-[4vh] sm:h-[5.5vh] bg-[#74C7D3] rounded-lg float-right focus:outline-none focus:ring focus:ring-[#fff]" required)
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") Oblasti
