@@ -120,7 +120,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .slider .progress{
   height: 100%;
-  left: 5%;
+  left: 0%;
   right: 70%;
   position: absolute;
   border-radius: 5px;

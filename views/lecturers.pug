@@ -37,6 +37,7 @@ block content
 
 
     section(class="w-full order-last lg:order-2 lg:max-w-[60vw] grid grid-cols-1 gap-y-12 mt-10 mr-[5vw] sm:grid-cols-2 lg:sm:grid-cols-1")
+      button(class="lg:hidden title sticky top-0 bg-[#74C7D3] bg-opacity-80 text-white" onclick="showFilter()")= "Najdi si lektora na míru" 
       each lector in lectors 
         a(href="/lecturers/"+lector.lecturer_uuid class="shadow-black shadow-md rounded-md p-4 max-h-auto  lg:max-h-[50vh] xl:max-h-[35vh] bg-[#02384D] focus:outline-none focus:ring focus:ring-[#fff]" rel="noopener noreferrer")
           img(src=lector.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4 my-2")
@@ -48,10 +49,12 @@ block content
           div(class="lg:float-left lg:max-w-[70%]")
             h2(class="mt-9 text-2xl px-10 text-white font-bold")=title_before +" "+ first_name+" "+ middle_name +" "+last_name+" "+title_after
             p(class="mt-5 text-xl px-10")=lector.claim
-            p(class="mt-5 text-xl px-10")="Cena za hodinu: "+lector.price_per_hour
+            div(class="grid grid-cols-2 gap-x-10")
+              p(class="text-xl pl-10")="Cena za hodinu: "+lector.price_per_hour +" Kč"
+              p(class="text-xl")= "Město: "+lector.location
             div(class="flex flex-row mt-4 max-w-full flex-wrap")
               each tag in lector.tags
-                p(class="w-auto mx-1")=tag.name+" / "
+                p(class=" pl-10")=tag.name
 
       //-   a(href="/lecturers/"+n.uuid class="w-2/3 mx-auto  my-11") 
       //-     img(src=n.picture_url, alt="" class="lg:float-left rounded-full w-2/3 mx-auto lg:w-1/4")
@@ -67,10 +70,13 @@ block content
       //- form get
       
       //-third part 
+
     section(class="lg:max-w-[30vw] xl:max-w-[20vw] block w-full float-right lg:order-3")
+
       a(href="/login" class="bg-[#74C7D3] rounded-lg block w-3/4 mx-auto mt-7 px-2 text-center py-2 text-lg focus:outline-none focus:ring focus:ring-[#fff]") Přihlášení pro lektory 
-      div(class="border sticky top-[10vh]")
-        h1(class="title") Najdi si lektora na míru
+      h1(class="title hidden lg:block w-full grow ") Najdi si lektora na míru
+      div(class="border sticky top-[10vh] hidden lg:block z-10" id="filterShow")
+
         //-price range
         form(action="/", method="GET" class="lg:text-lg xl:text-xl bg-[#02384D]")
           .wrapper
@@ -102,8 +108,7 @@ block content
           div(class="city container my-2 mx-auto")
             label(for="city") Město 
             input(type="text", name="city" id="city" class="focus:outline-none focus:ring focus:ring-[#74C7D3]")
-          button(type="submit" class="bg-[#74C7D3] rounded-lg block w-1/2 mx-auto mt-3 focus:outline-none focus:ring focus:ring-[#fff]") Odeslat
-
+          button(type="submit" class="bg-[#74C7D3] h-12 rounded-lg block w-1/2 mx-auto mt-3 focus:outline-none focus:ring focus:ring-[#fff] " onclick="hiddeFilter()") Odeslat
         //-footer
   footer(class="bg-[#2F7282] bg-opacity-60 text-white text-center py-4 mt-[5vh]")
     img(src="../../img/logo.png", alt="logo" class=" w-2/12 lg:w-1/12 ml-4")

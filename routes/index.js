@@ -438,7 +438,7 @@ router.post('/lecturers/:uuid', (req, res)=>{
 router.get('/lecturers/:uuid', (req, res)=>{
   const uuidParam = req.params;
   let sql = "SELECT * FROM reservation WHERE lecturer_uuid = ?";
-  db.all(sql,[uuidParam],(err, rows) => {
+  db.all(sql,[uuidParam.uuid],(err, rows) => {
     if (err) {
       return console.error(err.message);
     }
@@ -455,13 +455,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
 
   let LecturerFull=[];
   let time =[]
-  const test =[{
-    date: '2024-02-20',
-    hours:[9,16]
-  },   { date: '2024-02-21',
-  hours:[8,16]
-}
-]
+
   let hours = [8,9,10,11,12,13,14,15,16,17,18,19]
   for(let i= 0; i<=21; i++){
     const date = new Date();
@@ -490,7 +484,7 @@ router.get('/lecturers/:uuid', (req, res)=>{
     })
 
   })
-
+  console.log(time)
 
 
   const getLecturer = "SELECT * FROM lecturers JOIN contact ON lecturers.lecturer_uuid =contact.contact_uuid WHERE lecturer_uuid = ?";
