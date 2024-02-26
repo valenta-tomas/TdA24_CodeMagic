@@ -767,44 +767,58 @@ else{
 //   lecturer_uuid: '0319be7b-6a7e-41ca-b8a1-c2b47bd3bd37'
 // }
 router.get('/user',checkAuthenticated, (req, res)=>{
+  function getDaysInMonth(month, year) {
+    const days = new Date(year, month, 0).getDate();
+    const result = [];
+    for (let day = 1; day <= days; day++) {
+        result.push(day);
+    }
+    return result;
+}
+  const sql = `DELETE FROM reservation WHERE reservation_uuid = ?`;
+  db.all(sql,[req.query.reservation_uuid],(err)=>{
+    if(err)
+    {
+      return console.error(err.message)
+    }
+
+  })
+
+
   const reservation = `SELECT * FROM reservation WHERE lecturer_uuid = ?`;
   db.all(reservation,[req.user.lecturer_uuid],(err, rows)=>{
     if(err){
       return console.error(err)
     }
-    const formatData =[]
+    const nazvyMesicu = [
+      "leden", "únor", "březen", "duben", "květen", "červen", 
+      "červenec", "srpen", "září", "říjen", "listopad", "prosinec"
+  ];
+  date=[]
+  for (let i = 1; i < 3; i++) {
+    
+    const today = new Date();
+    const month = today.getMonth() + i; // Měsíce jsou indexované od 0, takže přidáme 1
+    const year = today.getFullYear();
+    const days = getDaysInMonth(month, year);
+    const response = {
+        mouth: month,
+        mouth_name:nazvyMesicu[month],
+        year: year,
+        days:days
+    };
+    date.push(response)
+  }
+  date.map(m=>{
+    m.days.map((d, index)=>{
+      m.days[index]={number:d, date_format: `${m.year}-${m.mouth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`, hours:[8,9,10,11,12,13,14,15,16,17,18,19]}
+    })
+  })
+ console.log(date[0])
+    
 
-    rows.map(student => {
 
-    try {
-      
-    } catch (error) {
-      
-    }
-      student.hours = student.hours.split(",");
-      student.hours.map(hour => {
-        const studentData = {
-          description: student.description,
-          summary: "Rezervace s " + student.first_name + " " + student.last_name,
-          location: "Místo konání: " + student.meeting
-        };
-        if (hour.length < 2) {
-          studentData.start = `${student.date}T0${hour}:00:00`;
-          if (parseInt(hour) + 1 < 10) {
-            studentData.end = `${student.date}T0${parseInt(hour) + 1}:00:00`;
-          } else {
-            studentData.end = `${student.date}T${parseInt(hour) + 1}:00:00`;
-          }
-        } else {
-          studentData.start = `${student.date}T${hour}:00:00`;
-          studentData.end = `${student.date}T${parseInt(hour) + 1}:00:00`;
-        }
-        
-        formatData.push(studentData); // Přidat studentData do pole formatData
-      });
-    });
-    console.log(rows)
-    console.log(formatData)
+
     res.render('user.pug',{reservation: rows})
 })
 })
@@ -845,7 +859,6 @@ router.get('/user/download/calendar',checkAuthenticated, (req, res)=>{
         formatData.push(studentData); // Přidat studentData do pole formatData
       });
     });
-    console.log(rows)
     console.log(formatData)
     const iCalData = createICalFile(formatData);
     const today = new Date();

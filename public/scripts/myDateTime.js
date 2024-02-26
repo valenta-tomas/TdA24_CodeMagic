@@ -1,5 +1,4 @@
 const myDate = document.getElementById("myDate")
-console.log(myDate)
 if(myDate !== undefined ||myDate !== "") 
 {const date = new Date();
 
