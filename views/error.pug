@@ -1,6 +1,10 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  div(class="mt-36")
+    div(class="flex justify-center items-center h-[50vh] flex-col")
+      h1(class="text-center mt-8 text-2xl") Upsík, něco se nepovedlo
+      img(src="../../../img/computer_error.png", alt="Computer error" class="w-1/2 sm:w-1/5 mt-2")
+    h2= error.status
+    pre #{error.stack}
+    a(href="/" class="bg-[#74C7D3] h-9 w-[50%] rounded-lg mx-auto lg:w-[25%] text-center mt-1 flex justify-center items-center") Zpět na hlavní stránku</a>

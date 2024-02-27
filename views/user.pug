@@ -47,7 +47,67 @@ block content
 
 
 
-        section(class="w-[40vw] order-2 lg:order-3")          
+        section(class="w-[40vw] order-2 lg:order-3")
+            div(class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-[30vw] bg-white " id="hour")
+            div(data-my-object=JSON.stringify(calander) class="hidden")          
             form(action="/logout?_method=DELETE" method="POST")
                 button(type="submit" class="bg-[#74C7D3] h-9 mt-4 w-[50%] rounded-lg mx-auto block") Log Out
             a(href='/user/download/calendar' class="bg-[#74C7D3] mt-4 w-[50%] rounded-lg mx-auto block text-center py-2") Download Calendar
+            each mouth in calander
+                div(class="mx-4 bg-white text-lg pb-3 rounded-lg")
+                    h2(class="text-center text-xl font-bold pt-3")= mouth.mouth_name
+                    div(class="grid grid-cols-7 gap-2 m-5")
+                        div Po
+                        div Út
+                        div St
+                        div Čt
+                        div Pá
+                        div So
+                        div Ne
+                        each day in mouth.days
+                            div(class="text-center bg-[#74C7D3] rounded-md cursor-pointer hover:bg-slate-400 days " id=""+day.date_format)= day.number
+        script.
+            document.addEventListener('DOMContentLoaded', () => {
+
+                var myObjectFromServer = JSON.parse(document.querySelector('[data-my-object]').getAttribute('data-my-object'));
+                console.log(myObjectFromServer)
+                var calendarDays = document.querySelectorAll('.days');
+                calendarDays.forEach((day) => {
+                    day.addEventListener('click', (event) => {
+                        myObjectFromServer.forEach(v=>{
+                            v.days.forEach(d=>{
+                                if(d.date_format === event.target.id)
+                                {
+                                    var hourDiv = document.getElementById('hour');
+                                    console.log("čau"+ d.date_format)
+                                    d.hours.forEach(h=>{
+                                        console.log(h.hour)
+                                        console.log(hourDiv)
+                                        var parentDiv = document.createElement('div');
+                                        parentDiv.className = "hover:bg-slate-400 mx-10 my-2 p-2 border-b-2 border-black";
+                                        // Vytvoření nového divu s textovým obsahem
+                                        var newDiv = document.createElement('div');
+                                        newDiv.textContent = h.hour + "-" + (h.hour + 1);
+                                        newDiv.className = "inline max-w-[30%]";
+
+                                        // Vytvoření nového paragrafu s textovým obsahem
+                                        var newp = document.createElement('p');
+                                        newp.textContent = h.event;
+                                        newp.className = "inline text-black max-w-[60%] mx-5 ";
+
+                                        // Přidání nového divu a nového paragrafu do rodičovského divu
+                                        parentDiv.appendChild(newDiv);
+                                        parentDiv.appendChild(newp);
+
+                                        hourDiv.appendChild(parentDiv);
+                                    })
+
+
+                                }
+                            })
+                        })
+                            
+                        });
+                    });
+                });
+                                                            

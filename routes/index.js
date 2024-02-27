@@ -573,12 +573,13 @@ router.get('/lecturers/:uuid', (req, res)=>{
     
     }
     else{
-      res.status(404).send(
-      {
-        "code": 404,
-        "message": "User not found"
-      }
-      );
+      res.render('error')
+      // res.status(404).send(
+      // {
+      //   "code": 454,
+      //   "message": "User not found"
+      // }
+      // );
       return;
     }
   })
@@ -809,35 +810,44 @@ router.get('/user',checkAuthenticated, (req, res)=>{
     };
     date.push(response)
   }
-  date.map(m=>{
-    m.days.map((d, index)=>{
-      m.days[index]={number:d, date_format: `${m.year}-${m.mouth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`, hours:[{hour:8, event:""},{hour:9, event:""},{hour:10, event:""},{hour:11, event:""},{hour:12, event:""},{hour:13, event:""},{hour:14, event:""},{hour:15, event:""},{hour:16, event:""},{hour:17, event:""},{hour:18, event:""},{hour:19, event:""}]}
-      rows.map(r=>{
-        if(r.hours.includes(",")){
-          r.hours = r.hours.split(",")
-        }
-        r.hours.map(hour=>{
-          m.days[index].hours.map((h,indexH) =>{
-            if(m.days[index].date_format === r.date && hour.toString() === h.hour.toString())
-          {
-            m.days[index].hours[indexH].event=`Máš schůzku s: ${r.first_name} ${r.last_name}\nJe: ${r.meeting}`
-            console.log(m.days[index].hours[indexH].event)
-            h.event =  `Máš schůzku s: ${r.first_name} ${r.last_name}\nJe: ${r.meeting}`
-            
-          }
-  
-          })
+  date.map(m => {
+    // Inicializace m.days[index] mimo vnitřní map()
+    const updatedDays = m.days.map(d => ({
+        number: d,
+        date_format: `${m.year}-${m.mouth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`,
+        hours: [
+            { hour: 8, event: "" }, { hour: 9, event: "" }, { hour: 10, event: "" },
+            { hour: 11, event: "" }, { hour: 12, event: "" }, { hour: 13, event: "" },
+            { hour: 14, event: "" }, { hour: 15, event: "" }, { hour: 16, event: "" },
+            { hour: 17, event: "" }, { hour: 18, event: "" }, { hour: 19, event: "" }
+        ]
+    }));
 
-        })
+    updatedDays.forEach((day, index) => {
+        rows.forEach(r => {
+            if (r.hours.includes(",")) {
+                r.hours = r.hours.split(",");
+            }
+            r.hours.forEach(hour => {
+                day.hours.forEach((h, indexH) => {
+                    if (day.date_format === r.date && hour.toString() === h.hour.toString()) {
+                        day.hours[indexH].event = `Máš schůzku s: ${r.first_name} ${r.last_name}, ${r.meeting}`;
+                        console.log(day.hours[indexH].event);
+                        h.event = `Máš schůzku s: ${r.first_name} ${r.last_name}, ${r.meeting}`;
+                    }
+                });
+            });
+        });
+    });
 
-        
-      })
-    })
-  })
+    // Přepsání původních hodnot v m.days
+    m.days = updatedDays;
+});
+
     
 
-    console.log(date[0].days[20])
-    res.render('user.pug',{reservation: rows})
+    console.log(date[0].days[0])
+    res.render('user.pug',{reservation: rows,calander: date})
 })
 })
 router.get('/user/download/calendar',checkAuthenticated, (req, res)=>{
