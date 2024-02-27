@@ -811,14 +811,32 @@ router.get('/user',checkAuthenticated, (req, res)=>{
   }
   date.map(m=>{
     m.days.map((d, index)=>{
-      m.days[index]={number:d, date_format: `${m.year}-${m.mouth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`, hours:[8,9,10,11,12,13,14,15,16,17,18,19]}
+      m.days[index]={number:d, date_format: `${m.year}-${m.mouth.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`, hours:[{hour:8, event:""},{hour:9, event:""},{hour:10, event:""},{hour:11, event:""},{hour:12, event:""},{hour:13, event:""},{hour:14, event:""},{hour:15, event:""},{hour:16, event:""},{hour:17, event:""},{hour:18, event:""},{hour:19, event:""}]}
+      rows.map(r=>{
+        if(r.hours.includes(",")){
+          r.hours = r.hours.split(",")
+        }
+        r.hours.map(hour=>{
+          m.days[index].hours.map((h,indexH) =>{
+            if(m.days[index].date_format === r.date && hour.toString() === h.hour.toString())
+          {
+            m.days[index].hours[indexH].event=`Máš schůzku s: ${r.first_name} ${r.last_name}\nJe: ${r.meeting}`
+            console.log(m.days[index].hours[indexH].event)
+            h.event =  `Máš schůzku s: ${r.first_name} ${r.last_name}\nJe: ${r.meeting}`
+            
+          }
+  
+          })
+
+        })
+
+        
+      })
     })
   })
- console.log(date[0])
     
 
-
-
+    console.log(date[0].days[20])
     res.render('user.pug',{reservation: rows})
 })
 })
