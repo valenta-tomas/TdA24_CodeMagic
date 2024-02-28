@@ -46,7 +46,7 @@ block content
 
 
         section(class="w-full lg:w-[40vw] order-2 lg:order-3")
-            div(class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70vw] sm:w-[60vw] lg:w-[30vw] bg-white rounded-md shadow-xl shadow-black" id="hour")
+            div(class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70vw] sm:w-[60vw] lg:w-[30vw] bg-white rounded-md shadow-xl shadow-black z-10" id="hour")
             div(data-my-object=JSON.stringify(calander) class="hidden")
             div(class="sticky")          
                 form(action="/logout?_method=DELETE" method="POST")
