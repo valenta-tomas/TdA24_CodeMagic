@@ -802,11 +802,20 @@ router.get('/user',checkAuthenticated, (req, res)=>{
     const month = today.getMonth() + i; // Měsíce jsou indexované od 0, takže přidáme 1
     const year = today.getFullYear();
     const days = getDaysInMonth(month, year);
+
+    const daysInMonth = getDaysInMonth(month, year);
+    const daysWithAbbreviations = daysInMonth.map(day => {
+      const date = new Date(year, month - 1, day);
+      const dayOfWeek = date.getDay(); // Index dne v týdnu (0 = neděle, 1 = pondělí, ..., 6 = sobota)
+      const abbreviations = ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'];
+      return abbreviations[dayOfWeek]; // Získání zkráceného názvu dne v týdnu
+  });
     const response = {
         mouth: month,
-        mouth_name:nazvyMesicu[month],
+        mouth_name:nazvyMesicu[month-1],
         year: year,
-        days:days
+        days:days,
+        days_name: daysWithAbbreviations
     };
     date.push(response)
   }

@@ -1,9 +1,9 @@
 extends layout
 block content
     main(class="flex flex-col lg:flex-row ")
-        section(class="w-[10vw]")
+        section(class="w-[20vw]sm:w-[10vw] ")
              a(href="../../" rel="noopener noreferrer") 
-                img(loading="lazy" src="../img/logo.png", alt="logo", class="w-40 pt-8 pl-4 sm:w-56 sm:inline-block lg:block lg:px-5")
+                img(loading="lazy" src="../img/logo.png", alt="logo", class="w-[50%] lg:w-40 pt-8 pl-4 sm:w-56 sm:inline-block lg:block lg:px-5")
         section(class="w-full lg:w-[50vw] order-3 lg:order-2")
             h1(class="lg:text-3xl my-7 font-bold") Tvé hodiny:
             each student, index in reservation
@@ -31,13 +31,11 @@ block content
                             input(type="submit" value="ano, smazat" class="cursor-pointer text-red-500")
                     script.
                         function Show(studentId){
-                            console.log(studentId)
                             const getForm = document.getElementById(studentId);
                             getForm.classList.remove("hidden");
                             getForm.classList.add("block");
                         }
                         function Hide(studentId){
-                            console.log(studentId)
                             const getForm = document.getElementById(studentId);
                             getForm.classList.remove("block");
                             getForm.classList.add("hidden");
@@ -47,42 +45,77 @@ block content
 
 
 
-        section(class="w-[40vw] order-2 lg:order-3")
-            div(class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-[30vw] bg-white " id="hour")
-            div(data-my-object=JSON.stringify(calander) class="hidden")          
-            form(action="/logout?_method=DELETE" method="POST")
-                button(type="submit" class="bg-[#74C7D3] h-9 mt-4 w-[50%] rounded-lg mx-auto block") Log Out
-            a(href='/user/download/calendar' class="bg-[#74C7D3] mt-4 w-[50%] rounded-lg mx-auto block text-center py-2") Download Calendar
-            each mouth in calander
-                div(class="mx-4 bg-white text-lg pb-3 rounded-lg")
-                    h2(class="text-center text-xl font-bold pt-3")= mouth.mouth_name
-                    div(class="grid grid-cols-7 gap-2 m-5")
-                        div Po
-                        div Út
-                        div St
-                        div Čt
-                        div Pá
-                        div So
-                        div Ne
-                        each day in mouth.days
-                            div(class="text-center bg-[#74C7D3] rounded-md cursor-pointer hover:bg-slate-400 days " id=""+day.date_format)= day.number
-        script.
-            document.addEventListener('DOMContentLoaded', () => {
+        section(class="w-full lg:w-[40vw] order-2 lg:order-3")
+            div(class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70vw] sm:w-[60vw] lg:w-[30vw] bg-white rounded-md shadow-xl shadow-black" id="hour")
+            div(data-my-object=JSON.stringify(calander) class="hidden")
+            div(class="sticky")          
+                form(action="/logout?_method=DELETE" method="POST")
+                    button(type="submit" class="bg-[#74C7D3] h-9 mt-4 w-[50%] rounded-lg text-xl sm:mx-auto ml-[40%] block mb-6 ") Odhlásit se 
+                each mouth in calander
+                    div(class=" bg-white sm:w-[80%] lg:w-[95%] mx-auto text-lg pb-3 rounded-lg w-full relative"+mouth.mouth_name id="calender")
+                        h2(class="text-center text-xl font-bold pt-3")= mouth.mouth_name
+                        img(class="w-11 float-right relative right-3 bottom-6 cursor-pointer" src="../../../img/arrow.png" id="icon")
+                        div(class="grid grid-cols-7 gap-2 m-5 float-none")
+                            div()= mouth.days_name[0]
+                            div()= mouth.days_name[1]
+                            div()= mouth.days_name[2]
+                            div()= mouth.days_name[3]
+                            div()= mouth.days_name[4]
+                            div()= mouth.days_name[5]
+                            div()= mouth.days_name[6]
+                            each day in mouth.days
+                                div(class="text-center bg-[#74C7D3] rounded-md cursor-pointer hover:bg-slate-400 days " id=""+day.date_format)= day.number
+                a(href='/user/download/calendar' class="bg-[#74C7D3] mt-4 w-[50%] rounded-lg mx-auto text-xl block text-center py-2") Stáhnout si kalendář
 
+        script.
+            var hourDiv = document.getElementById('hour');
                 var myObjectFromServer = JSON.parse(document.querySelector('[data-my-object]').getAttribute('data-my-object'));
-                console.log(myObjectFromServer)
                 var calendarDays = document.querySelectorAll('.days');
+                var hourDiv = document.getElementById('hour');
+                var children = hourDiv.children;
+
+                console.log(myObjectFromServer)
+
+                var calender = document.getElementById('calender');
+                var icon = calender.querySelector('#icon');
+
+                var calander2=document.querySelector('[class*="' + myObjectFromServer[1].mouth_name.toString() + '"]')
+                var icon2 = calander2.querySelector('#icon');
+
+                calander2.classList.add("hidden");
+                //- mouth.classList.add("hidden");
+
+
+                icon.addEventListener('click', (event) => {
+                    calander2.classList.remove("hidden");
+                    calender.classList.add("hidden");
+                })
+
+                icon2.addEventListener('click', (event) => {
+                    calender.classList.remove("hidden");
+                    calander2.classList.add("hidden");
+                })
+
+
+                for(i = 0; i<=1;i++){
+                    var mouth = myObjectFromServer[i]
+                    mouth.days.map(d=>{
+                        if (d.hours.some(item => item.event !== "")) {
+                            var day = document.getElementById(d.date_format);
+                            console.log(d.date_format);
+                            day.className += " bg-[#FEC93D]";
+                        }
+
+                    })
+                }
                 calendarDays.forEach((day) => {
                     day.addEventListener('click', (event) => {
+                       
                         myObjectFromServer.forEach(v=>{
                             v.days.forEach(d=>{
-                                if(d.date_format === event.target.id)
-                                {
-                                    var hourDiv = document.getElementById('hour');
-                                    console.log("čau"+ d.date_format)
+
+                                if(d.date_format === event.target.id && hourDiv.children.length <= 9 ) { // Přidáno omezení na 9 prvků v hourDiv
                                     d.hours.forEach(h=>{
-                                        console.log(h.hour)
-                                        console.log(hourDiv)
                                         var parentDiv = document.createElement('div');
                                         parentDiv.className = "hover:bg-slate-400 mx-10 my-2 p-2 border-b-2 border-black";
                                         // Vytvoření nového divu s textovým obsahem
@@ -98,16 +131,21 @@ block content
                                         // Přidání nového divu a nového paragrafu do rodičovského divu
                                         parentDiv.appendChild(newDiv);
                                         parentDiv.appendChild(newp);
-
                                         hourDiv.appendChild(parentDiv);
                                     })
-
-
                                 }
                             })
+
                         })
-                            
-                        });
                     });
                 });
-                                                            
+            hourDiv.addEventListener('click', function(event) {
+                 while (hourDiv.firstChild) {
+                    hourDiv.removeChild(hourDiv.firstChild);
+                }
+
+            });      
+
+         
+
+                    

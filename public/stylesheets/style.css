@@ -12,12 +12,24 @@ body{
 p, h1{
   color: white;
 }
-/*style for form*/
-input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-
+/*style for login*/
+.image {
+  position: relative;
 }
+
+.image::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../img/Desktop_-_61.png');
+  -webkit-filter: blur(9px) saturate(150%); /* Přidání saturace a snížení rozptýlení */
+  z-index: -1;
+  background-size: cover;
+}
+
 /*style for filters*/
 .border{
   margin-top: 20px;
@@ -120,8 +132,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .slider .progress{
   height: 100%;
-  left: 0%;
-  right: 70%;
+  left: 25%;
+  right: 25%;
   position: absolute;
   border-radius: 5px;
   background: #74C7D3;
@@ -157,33 +169,4 @@ input[type="range"]::-moz-range-thumb{
   pointer-events: auto;
   -moz-appearance: none;
   box-shadow: 0 0 6px rgba(0,0,0,0.05);
-}
-/* Pro WebKit (Chrome, Safari) */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
-::-webkit-scrollbar-track {
-  background: transparent; 
-}
-::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 6px;
-}
-
-/* Pro Mozilla Firefox */
-/* Upřesnění vzhledu posuvníkové lišty ve Firefoxu je obtížné, protože Firefox nemá plnou podporu pro vzhled posuvníku v CSS. */
-
-/* Pro všechny ostatní prohlížeče */
-/* Nastavení šířky posuvníku */
-
-* {
-  scrollbar-width: thin; /* Možnosti: auto | thin | none */
-  font-family: "Comfortaa", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-
 }
