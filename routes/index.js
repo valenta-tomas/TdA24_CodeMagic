@@ -924,6 +924,12 @@ router.delete('/logout', (req, res, next) => {
     res.redirect('/login');
   });
 })
+router.get('/onas',(req, res)=>{
+  res.render('about_us')
+})
+router.get('/zasady',(req, res)=>{
+  res.render('privacy_policy')
+})
 
 router.get('/api',(req, res)=>{
   res.json({secret:"The cake is a lie"});
