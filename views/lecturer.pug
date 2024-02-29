@@ -159,13 +159,15 @@ block content
           }
 
         
-      div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] lg:mx-auto sm:mx-auto")
-        label(for="online" class="mr-2") Online
-          span(class="text-[#FEC93D]") *
-        input(type="radio" id="online" name="meeting" value="online" required) 
-        label(for="personally" class="mr-2 ml-20") Osobně
-          span(class="text-[#FEC93D]") *
-        input(type="radio" id="personally" name="meeting" value="osobně" required)  
+      div(class="max-w-[70vw] sm:max-w-[40vw] lg:max-w-[50vw] lg:ml-[35%] xl:max-w-[39vw] grid grid-cols-2 sm:ml-[30%] float-left")
+        div()
+          label(for="online" class="") Online
+            span(class="text-[#FEC93D]") *
+          input(type="radio" id="online" name="meeting" value="online" required)
+        div() 
+          label(for="personally" class="") Osobně
+            span(class="text-[#FEC93D]") *
+          input(type="radio" id="personally" name="meeting" value="osobně" required)  
       div(class="max-w-[70vw] sm:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[39vw] sm:ml-16 lg:ml-0")
         label(for="" class="mr-7 block sm:inline-block lg:ml-[5vw]") E-mail
           span(class="text-[#FEC93D]") *

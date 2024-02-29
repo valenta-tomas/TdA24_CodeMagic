@@ -20,13 +20,13 @@ block content
                         p= "Tag: "+student.tag
                         p= "Popisek: "+student.description
                     button(type="button" onclick="Show('" + studentId + "')" class="bg-[#74C7D3] col-span-2 h-9 mt-4 w-[50%] mx-auto rounded-lg") smazat záznam
-                    form(action="", method="get" id=""+studentId class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80vw] lg:w-[30vw] h-[40vh] bg-white rounded-lg p-4 border-2 border-black text-black lg:text-xl")
+                    form(action="", method="get" id=""+studentId class="hidden absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80vw] lg:w-[30vw] min-h-max bg-white rounded-lg p-4 border-2 border-black text-black lg:text-xl")
                         input(name="reservation_uuid" value=""+student.reservation_uuid class="hidden")
                         h1(class="text-black text-center max-w-full my-4")= "Chystáte se smazat hodinu, opravdu to chcete?"
                         h2(class="text-black  text-center max-w-full my-4")= "Po smazaní nelze vzít zpět"
                         h2(class="text-black  text-center max-w-full my-4")= "Dejte vědět studentovi že hodina padá"
                         a(href="mailto:"+student.email class="text-black  text-center w-full block my-4")= student.email
-                        div(class="grid grid-cols-2 mt-20")
+                        div(class="grid grid-cols-2 mt-12")
                             button(type="button"  onclick="Hide('" + studentId + "')") ne
                             input(type="submit" value="ano, smazat" class="cursor-pointer text-red-500")
                     script.

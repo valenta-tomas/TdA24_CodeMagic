@@ -433,7 +433,7 @@ router.post('/lecturers/:uuid', (req, res)=>{
     })
   }
   reservation()
-  res.redirect('/');
+  res.redirect('/uspech');
 })
 router.get('/lecturers/:uuid', (req, res)=>{
   const uuidParam = req.params;
@@ -950,6 +950,9 @@ router.get('/lecturer',(req, res)=>{
     ,tag7 : data.tags[6].name
     ,tag8 : data.tags[7].name
    });
+})
+router.get('/uspech',(req, res)=>{
+  res.render('success')
 })
 
 function checkAuthenticated(req, res, next) {
