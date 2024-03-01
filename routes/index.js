@@ -837,6 +837,10 @@ router.get('/user',checkAuthenticated, (req, res)=>{
             if (r.hours.includes(",")) {
                 r.hours = r.hours.split(",");
             }
+            if (!Array.isArray(r.hours)) {
+              r.hours = [r.hours];
+            }
+          
             r.hours.forEach(hour => {
                 day.hours.forEach((h, indexH) => {
                     if (day.date_format === r.date && hour.toString() === h.hour.toString()) {
